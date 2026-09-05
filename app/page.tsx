@@ -103,12 +103,7 @@ export default function LandingIntro() {
 
                 </Link>
 
-                <button
-                  type="button"
-                  className="w-12 h-12 rounded-full bg-[#13221f] border border-white/10 hover:border-white/30 flex items-center justify-center text-white transition"
-                >
-                  <Play className="w-4 h-4 fill-white ml-0.5" />
-                </button>
+
               </div>
 
               {/* Review & Social Proof Bar */}
