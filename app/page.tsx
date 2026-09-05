@@ -61,9 +61,9 @@ export default function LandingIntro() {
           {/* Right Button */}
           <Link
             href="/login"
-            className="px-6 py-2.5 rounded-full border border-white/20 hover:border-[#c8f53c] text-xs sm:text-sm font-semibold text-white hover:text-[#c8f53c] transition-all"
+            className="px-6 py-2.5 rounded-full border border-white/20 hover:border-[#c8f53c] text-xs sm:text-sm font-semibold text-white hover:text-[#c8f53c] transition-all font-semibold"
           >
-            Mulai Catat Pengeluaran
+            Mulai
           </Link>
         </div>
       </nav>
