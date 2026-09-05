@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowRight,
+
   Play,
   Star,
   ChevronDown,
@@ -54,10 +54,7 @@ export default function LandingIntro() {
             <a href="#about" className="hover:text-white transition">About Us</a>
             <a href="#benefits" className="hover:text-white transition">Benefits</a>
             <a href="#services" className="hover:text-white transition">Services</a>
-            <div className="flex items-center gap-1 cursor-pointer hover:text-white transition">
-              <span>Pages</span>
-              <ChevronDown className="w-3.5 h-3.5 opacity-70" />
-            </div>
+
             <a href="#contact" className="hover:text-white transition">Contact Us</a>
           </div>
 
@@ -103,7 +100,7 @@ export default function LandingIntro() {
                   className="px-7 py-3.5 rounded-full bg-[#c8f53c] hover:bg-[#b5e230] text-[#0b1614] text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-[#c8f53c]/20"
                 >
                   <span>Mulai Sekarang</span>
-                  <ArrowRight className="w-4 h-4" />
+
                 </Link>
 
                 <button
@@ -222,7 +219,7 @@ export default function LandingIntro() {
                 <p className="text-xs font-bold text-white">How Does It Work?</p>
                 <p className="text-[11px] text-[#c8f53c] flex items-center gap-1 mt-0.5">
                   <span>Pelajari Alur AI</span>
-                  <ArrowRight className="w-3 h-3" />
+
                 </p>
               </div>
             </div>
@@ -335,11 +332,11 @@ export default function LandingIntro() {
                   Join us to achieve sustainable financial growth and reach your goals with the right tools.
                 </p>
                 <Link
-                  href="/transactions"
+                  href="/login"
                   className="px-5 py-2.5 rounded-full bg-[#c8f53c] text-[#0b1614] text-xs font-bold hover:bg-[#b5e230] transition shrink-0 flex items-center gap-1.5"
                 >
                   <span>Learn More</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+
                 </Link>
               </div>
             </div>
@@ -503,11 +500,11 @@ export default function LandingIntro() {
               </h2>
             </div>
             <Link
-              href="/transactions"
+              href="/login"
               className="px-6 py-3 rounded-full bg-[#c8f53c] text-[#0b1614] text-xs font-bold hover:bg-[#b5e230] transition flex items-center gap-2 self-start md:self-end"
             >
               <span>Explore All</span>
-              <ArrowRight className="w-4 h-4" />
+
             </Link>
           </div>
 
