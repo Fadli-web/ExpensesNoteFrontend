@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Lock, Mail, ArrowRight, AlertCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import GoogleSignInButton from "@/components/GoogleSignInButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -83,6 +84,19 @@ export default function LoginPage() {
               <p className="font-medium flex-1">{error}</p>
             </div>
           )}
+
+          {/* Google Sign In Button */}
+          <div className="mb-4">
+            <GoogleSignInButton label="Masuk dengan Google" />
+          </div>
+
+          <div className="relative flex py-2 items-center mb-3">
+            <div className="flex-grow border-t border-neutral-200"></div>
+            <span className="flex-shrink mx-3 text-[11px] font-medium text-neutral-400">
+              atau gunakan email
+            </span>
+            <div className="flex-grow border-t border-neutral-200"></div>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

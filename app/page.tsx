@@ -1,27 +1,54 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
-  Receipt,
-  TrendingUp,
-  PieChart,
-  FileSpreadsheet,
+  ArrowRight,
   ArrowUpRight,
-  ScanLine,
+  ChevronLeft,
+  ChevronRight,
+  Scan,
   CheckCircle2,
   Mail,
   Phone,
-  MapPin,
   Clock,
-  Send,
-  ShieldCheck,
-  ChevronRight,
-  Sparkles,
+  Menu,
+  X,
 } from "lucide-react";
 
 export default function LandingIntro() {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("opacity-100", "translate-y-0");
+            entry.target.classList.remove("opacity-0", "translate-y-8");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elements = document.querySelectorAll(".reveal-on-scroll");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollCarousel = (direction: "left" | "right") => {
+    if (carouselRef.current) {
+      const cardWidth = carouselRef.current.firstElementChild?.clientWidth || 300;
+      carouselRef.current.scrollBy({
+        left: direction === "left" ? -cardWidth - 24 : cardWidth + 24,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,332 +57,489 @@ export default function LandingIntro() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F5F2] text-[#161616] font-sans antialiased selection:bg-[#161616] selection:text-white">
+    <div className="min-h-screen bg-[#FAFAFA] text-[#111111] font-sans antialiased selection:bg-black selection:text-white overflow-x-hidden">
       {/* ========================================================================= */}
-      {/* 1. FLOATING MINIMALIST PILL NAVBAR (Norma Signature Style) */}
+      {/* 1. FLOATING PILL NAVBAR + MOBILE RESPONSIVE DRAWER */}
       {/* ========================================================================= */}
-      <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-        <nav className="w-full max-w-5xl bg-white/70 backdrop-blur-xl border border-black/[0.07] rounded-full px-4 sm:px-6 h-14 flex items-center justify-between shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="w-6 h-6 rounded-full bg-[#161616] flex items-center justify-center text-white text-[11px] font-semibold">
-              E
-            </span>
-            <span className="text-sm font-semibold tracking-tight uppercase text-[#161616]">
-              ExpendNote
-            </span>
+      <header className="fixed top-3 sm:top-5 left-0 right-0 z-50 flex justify-center px-3 sm:px-4">
+        <nav className="w-full max-w-5xl bg-white/80 backdrop-blur-2xl border border-black/[0.07] rounded-full px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between shadow-[0_4px_28px_rgba(0,0,0,0.04)] transition-all">
+          <Link href="/" className="font-semibold text-xs tracking-wider uppercase text-black shrink-0">
+            ExpendNote
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-[13px] font-medium text-neutral-500">
-            <a href="#about" className="hover:text-black transition-colors">About</a>
-            <a href="#benefits" className="hover:text-black transition-colors">Philosophy</a>
-            <a href="#services" className="hover:text-black transition-colors">System</a>
-            <a href="#contact" className="hover:text-black transition-colors">Contact</a>
+          <div className="hidden md:flex items-center gap-7 text-xs font-medium text-neutral-500">
+            <a href="#how-it-works" className="hover:text-black transition">How it works</a>
+            <a href="#philosophy" className="hover:text-black transition">Architecture</a>
+            <a href="#presets" className="hover:text-black transition">Presets</a>
+            <a href="#contact" className="hover:text-black transition">Inquiry</a>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="hidden lg:inline-block text-[11px] font-mono text-neutral-400">ID / EN</span>
             <Link
               href="/login"
-              className="px-4 py-2 rounded-full text-xs font-medium text-neutral-600 hover:text-black transition"
+              className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-black text-white hover:bg-neutral-800 text-[11px] sm:text-xs font-medium transition shadow-sm"
             >
-              Sign In
+              Start Free
             </Link>
-            <Link
-              href="/login"
-              className="px-4 py-2 rounded-full bg-[#161616] text-white hover:bg-black/85 text-xs font-medium transition shadow-sm"
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-1.5 rounded-full text-neutral-700 hover:text-black md:hidden"
+              aria-label="Toggle Menu"
             >
-              Get Started
-            </Link>
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </nav>
       </header>
 
-      {/* ========================================================================= */}
-      {/* 2. CINEMATIC HERO (Video / Large Ambient Image + Glass Overlays) */}
-      {/* ========================================================================= */}
-      <section className="relative pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="relative w-full h-[76vh] min-h-[580px] rounded-[2.5rem] overflow-hidden bg-[#181818] shadow-2xl border border-black/5 flex items-end p-8 sm:p-14">
-          {/* Background Ambient Imagery */}
-          <img
-            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&auto=format&fit=crop&q=80"
-            alt="ExpendNote ambient interface"
-            className="absolute inset-0 w-full h-full object-cover opacity-45 mix-blend-luminosity scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
+      {/* Mobile Drawer Dropdown */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-x-3 top-16 z-40 p-5 rounded-3xl bg-white/95 backdrop-blur-2xl border border-black/[0.08] shadow-2xl md:hidden space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col space-y-3 text-sm font-medium text-neutral-700">
+            <a
+              href="#how-it-works"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-xl hover:bg-neutral-100 transition"
+            >
+              How it works
+            </a>
+            <a
+              href="#philosophy"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-xl hover:bg-neutral-100 transition"
+            >
+              Architecture
+            </a>
+            <a
+              href="#presets"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-xl hover:bg-neutral-100 transition"
+            >
+              Presets
+            </a>
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-xl hover:bg-neutral-100 transition"
+            >
+              Inquiry
+            </a>
+          </div>
+        </div>
+      )}
 
-          {/* Top Glass Badge in Hero */}
-          <div className="absolute top-8 left-8 sm:left-12 flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 text-white text-[12px] font-medium tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            Autonomous Ledger Engine 2.0
+      {/* ========================================================================= */}
+      {/* 2. CINEMATIC VIDEO HERO */}
+      {/* ========================================================================= */}
+      <section className="pt-20 sm:pt-24 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="relative w-full min-h-[580px] sm:min-h-[640px] lg:h-[84vh] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden bg-black shadow-2xl border border-black/5 flex flex-col justify-between p-6 sm:p-10 lg:p-14">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-55 mix-blend-screen scale-105 pointer-events-none"
+          >
+            <source
+              src="https://video-previews.elements.envatousercontent.com/07a9bf0b-16fe-4114-832c-90d26b54051d/watermarked_preview/watermarked_preview.mp4"
+              type="video/mp4"
+            />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/50" />
+
+          {/* Top Pill Chip */}
+          <div className="relative z-10 self-start">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 text-white text-[10px] sm:text-[11px] font-medium tracking-wide">
+              Free cloud synchronization on all accounts
+            </div>
           </div>
 
-          {/* Hero Content Bottom */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end w-full">
-            <div className="lg:col-span-8 space-y-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-neutral-400 font-mono">
-                Visionary Financial Ledger
-              </p>
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light text-white tracking-[-0.04em] leading-[1.05]">
-                Get your expenditure <br />
-                <span className="font-serif italic font-normal text-neutral-200">in one stream.</span>
+          {/* Center Content Split */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-end my-auto lg:my-0">
+            <div className="lg:col-span-7 space-y-2">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-normal text-white tracking-[-0.04em] leading-[1.06]">
+                Cut your expense clutter. <br />
+                <span className="font-serif italic text-neutral-200 font-light">In one scan.</span>
               </h1>
             </div>
 
-            <div className="lg:col-span-4 lg:text-right space-y-4">
-              <p className="text-sm text-neutral-300 font-light leading-relaxed max-w-sm ml-auto">
-                Konversikan setiap struk fisik menjadi metrik terkurasi. Didukung kecerdasan optik Gemini AI tanpa gesekan manual.
+            <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+              <p className="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed max-w-md">
+                Sebuah sistem pencatatan cerdas. Arahkan kamera ke struk transaksi belanja, dan seluruh rincian pos anggaran tertata rapi — tanpa ketik manual selamanya.
               </p>
-              <div className="flex lg:justify-end gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/login"
-                  className="px-6 py-3 rounded-full bg-white text-[#161616] text-xs font-semibold hover:bg-neutral-100 transition shadow-lg inline-flex items-center gap-2"
+                  className="px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition shadow-sm"
                 >
-                  <span>Initialize System</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  Quick start
                 </Link>
+                <a
+                  href="#how-it-works"
+                  className="px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 text-white text-xs font-medium hover:bg-white/20 transition"
+                >
+                  What are the features
+                </a>
               </div>
+            </div>
+          </div>
+
+          {/* Bottom Batch Status Chip */}
+          <div className="relative z-10 flex justify-center pt-4">
+            <div className="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-neutral-300 text-[10px] sm:text-[11px] flex items-center gap-2 text-center">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+              <span>Gemini Vision AI Engine aktif. Kompatibel dengan nota cetak & digital.</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. EDITORIAL MARQUEE / METRICS BAR */}
+      {/* 3. HOW IT WORKS */}
       {/* ========================================================================= */}
-      <section className="py-14 border-b border-black/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-neutral-400">Precision</span>
-              <p className="text-3xl font-light tracking-tight text-[#161616]">99.4%</p>
-              <p className="text-xs text-neutral-500">Optical OCR Accuracy</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-neutral-400">Latency</span>
-              <p className="text-3xl font-light tracking-tight text-[#161616]">&lt; 2.4s</p>
-              <p className="text-xs text-neutral-500">Receipt parsing speed</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-neutral-400">Volume</span>
-              <p className="text-3xl font-light tracking-tight text-[#161616]">150k+</p>
-              <p className="text-xs text-neutral-500">Processed entries</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-neutral-400">Indexed</span>
-              <p className="text-3xl font-light tracking-tight text-[#161616]">$40M</p>
-              <p className="text-xs text-neutral-500">Tracked cash flow</p>
-            </div>
-          </div>
+      <section id="how-it-works" className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mb-12 sm:mb-14 space-y-3 transition-all duration-700 reveal-on-scroll opacity-0 translate-y-8">
+          <h2 className="text-2xl sm:text-4xl font-normal tracking-tight">How it works.</h2>
+          <p className="text-neutral-500 text-xs sm:text-sm font-light leading-relaxed">
+            Konfigurasikan preferensi anggaran Anda sekali, lalu biarkan sistem AI mengerjakan sisanya — satu foto struk untuk membaca, mengelompokkan, dan mengarsipkannya.
+          </p>
         </div>
-      </section>
 
-      {/* ========================================================================= */}
-      {/* 4. ASYMMETRIC PHILOSOPHY / ABOUT SECTION */}
-      {/* ========================================================================= */}
-      <section id="about" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 space-y-6">
-            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-400">
-              01 / Architecture
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-light tracking-tight leading-[1.15]">
-              A digital sanctuary <br />
-              <span className="font-serif italic font-normal">for everyday expenses.</span>
-            </h2>
-            <p className="text-neutral-600 text-sm leading-relaxed font-light">
-              ExpendNote menghilangkan kebisingan spreadsheet konvensional. Setiap nota belanja, slip pembayaran, dan struk fisik diubah menjadi sistem jurnal yang terorganisasi dan hening.
-            </p>
-
-            <div className="pt-4 border-t border-black/[0.06] space-y-4 text-xs font-light text-neutral-700">
-              <div className="flex items-start gap-3">
-                <span className="font-mono text-neutral-400 text-[11px]">01</span>
-                <p><strong className="font-medium text-black">Instant Recognition:</strong> Deteksi pos pengeluaran, PPN, dan diskon secara granular.</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="font-mono text-neutral-400 text-[11px]">02</span>
-                <p><strong className="font-medium text-black">Cryptographic Cloud Vault:</strong> Arsip digital tidak pernah pudar layaknya tinta kertas termal.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-7">
-            <div className="relative rounded-3xl overflow-hidden bg-[#ECEAE5] p-3 border border-black/5 shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1000&auto=format&fit=crop&q=80"
-                alt="Architecture view"
-                className="w-full h-[480px] object-cover rounded-2xl grayscale-[25%] hover:grayscale-0 transition duration-700"
-              />
-              <div className="absolute bottom-8 left-8 right-8 p-5 rounded-2xl bg-white/70 backdrop-blur-xl border border-white/60 shadow-lg flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-neutral-800">Automated Taxonomy Engine</p>
-                  <p className="text-[11px] text-neutral-500 font-light">Categorizes every receipt without user intervention</p>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs">
-                  <ScanLine className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 5. NORMA-STYLE PRODUCT CARDS (Clean Monochrome Minimal Cards) */}
-      {/* ========================================================================= */}
-      <section id="benefits" className="py-24 bg-[#EFECE6] border-y border-black/[0.05]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-3">
-              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-400">
-                02 / Core Capabilities
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 transition-all duration-700 delay-100 reveal-on-scroll opacity-0 translate-y-8">
+          {/* Card 1 */}
+          <div className="rounded-3xl bg-white border border-black/[0.07] p-6 sm:p-7 flex flex-col justify-between min-h-[440px] sm:min-h-[470px] shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="space-y-3 sm:space-y-4">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-black/15 text-xs font-mono">
+                1
               </span>
-              <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-[#161616]">
-                Designed with clarity. <br />
-                <span className="font-serif italic font-normal">Engineered for precision.</span>
-              </h2>
+              <div>
+                <h3 className="text-base sm:text-lg font-medium tracking-tight">Tentukan pos anggaran</h3>
+                <p className="text-xs text-neutral-500 font-light mt-1">Pilih kategori pengeluaran Anda satu kali.</p>
+              </div>
             </div>
-            <p className="text-neutral-500 text-xs font-light max-w-xs md:text-right">
-              Empat pilar otomasi pengelolaan keuangan mikro dan korporat.
-            </p>
+
+            <div className="mt-6 bg-[#F6F5F2] border border-black/[0.06] rounded-2xl p-4 space-y-2.5 shadow-inner">
+              <div className="flex justify-between items-center text-[10px] font-mono text-neutral-400">
+                <span>PRESET ANGGARAN</span>
+                <span>AUTO</span>
+              </div>
+              <div className="p-2.5 bg-white rounded-xl border border-black/5 text-xs flex justify-between items-center">
+                <span>Kebutuhan Pokok</span>
+                <span className="text-[10px] font-mono text-neutral-400">50%</span>
+              </div>
+              <div className="p-2.5 bg-white rounded-xl border border-black/5 text-xs flex justify-between items-center">
+                <span>Operasional Bisnis</span>
+                <span className="text-[10px] font-mono text-neutral-400">30%</span>
+              </div>
+              <div className="p-2.5 bg-white rounded-xl border border-black/5 text-xs flex justify-between items-center">
+                <span>Tabungan & Invest</span>
+                <span className="text-[10px] font-mono text-neutral-400">20%</span>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: Receipt,
-                tag: "01 / OCR",
-                title: "Optical Capture",
-                desc: "Tangkap gambar struk buram sekalipun dengan kalibrasi kontras adaptif.",
-              },
-              {
-                icon: Sparkles,
-                tag: "02 / AI",
-                title: "Auto-Sorting",
-                desc: "Algoritma memisahkan biaya operasional, pajak, dan pengeluaran pribadi.",
-              },
-              {
-                icon: TrendingUp,
-                tag: "03 / METRICS",
-                title: "Cashflow Pulse",
-                desc: "Kurva pengeluaran real-time dengan ambang batas limit preventif.",
-              },
-              {
-                icon: FileSpreadsheet,
-                tag: "04 / EXPORT",
-                title: "Audit Ready",
-                desc: "Ekspor rapi menuju standar CSV, Excel, dan integrasi software akuntansi.",
-              },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white/80 backdrop-blur-md rounded-2xl p-7 border border-black/[0.06] hover:border-black/20 transition-all duration-300 flex flex-col justify-between h-72 shadow-sm group"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono tracking-widest text-neutral-400">{item.tag}</span>
-                    <item.icon className="w-4 h-4 text-neutral-700 group-hover:scale-110 transition-transform" />
-                  </div>
-                  <h3 className="text-base font-medium tracking-tight text-neutral-900">{item.title}</h3>
-                </div>
-                <p className="text-xs text-neutral-500 font-light leading-relaxed">{item.desc}</p>
+          {/* Card 2 */}
+          <div className="rounded-3xl bg-white border border-black/[0.07] p-6 sm:p-7 flex flex-col justify-between min-h-[440px] sm:min-h-[470px] shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="space-y-3 sm:space-y-4">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-black/15 text-xs font-mono">
+                2
+              </span>
+              <div>
+                <h3 className="text-base sm:text-lg font-medium tracking-tight">Foto struk transaksi</h3>
+                <p className="text-xs text-neutral-500 font-light mt-1">Cukup arahkan kamera ke bon fisik atau PDF.</p>
               </div>
-            ))}
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[210px] h-[240px] sm:h-[260px] bg-neutral-900 rounded-t-[2.2rem] p-3 border-x-4 border-t-4 border-neutral-700 shadow-2xl flex flex-col items-center justify-center text-center">
+              <div className="w-10 h-1 rounded-full bg-neutral-600 mb-6" />
+              <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white mb-3 animate-pulse">
+                <Scan className="w-6 h-6" />
+              </div>
+              <p className="text-[11px] text-white font-medium">Ready to Scan</p>
+              <p className="text-[9px] text-neutral-400">Pegang struk di depan lensa</p>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div className="rounded-3xl bg-white border border-black/[0.07] p-6 sm:p-7 flex flex-col justify-between min-h-[440px] sm:min-h-[470px] shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="space-y-3 sm:space-y-4">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-black/15 text-xs font-mono">
+                3
+              </span>
+              <div>
+                <h3 className="text-base sm:text-lg font-medium tracking-tight">Terdata otomatis</h3>
+                <p className="text-xs text-neutral-500 font-light mt-1">Angka tersusun rapi tanpa sisa kertas.</p>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[210px] h-[240px] sm:h-[260px] bg-[#1a1a1a] rounded-t-[2.2rem] p-3 border-x-4 border-t-4 border-neutral-700 shadow-2xl flex flex-col justify-between text-white">
+              <div className="w-10 h-1 rounded-full bg-neutral-600 mx-auto" />
+              <div className="space-y-2 py-4">
+                <div className="flex items-center gap-1.5 text-emerald-400 text-[10px]">
+                  <CheckCircle2 className="w-3 h-3" />
+                  <span>Struk Terverifikasi</span>
+                </div>
+                <p className="text-xs font-semibold">Rp 148.500</p>
+                <p className="text-[10px] text-neutral-400">Kopi & Konsumsi • Hari ini</p>
+              </div>
+              <div className="w-full py-1.5 rounded-lg bg-white/10 text-center text-[10px] text-neutral-300">
+                Selesai
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Filter Pills */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-10 sm:mt-12 text-xs">
+          <span className="text-neutral-400 font-light text-center w-full sm:w-auto mb-1 sm:mb-0">
+            Atau input langsung dari:
+          </span>
+          <span className="px-3.5 py-1 rounded-full bg-neutral-100 border border-black/5 text-neutral-700 font-medium text-[11px] sm:text-xs">
+            Kamera Ponsel
+          </span>
+          <span className="px-3.5 py-1 rounded-full bg-neutral-100 border border-black/5 text-neutral-700 font-medium text-[11px] sm:text-xs">
+            Unggah File Foto Struk
+          </span>
+          <span className="px-3.5 py-1 rounded-full bg-neutral-100 border border-black/5 text-neutral-700 font-medium text-[11px] sm:text-xs">
+            Ekspor Spreadsheet
+          </span>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <Link
+            href="/login"
+            className="px-6 py-2.5 rounded-full bg-black text-white hover:bg-neutral-800 text-xs font-medium transition inline-flex items-center gap-2 shadow-sm"
+          >
+            <span>Mulai Uji Coba Sekarang</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 4. METRIC STATS SHOWCASE */}
+      {/* ========================================================================= */}
+      <section id="philosophy" className="py-10 sm:py-12 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="relative w-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden bg-black shadow-2xl border border-black/10 p-6 sm:p-10 lg:p-14 min-h-[580px] flex flex-col justify-between transition-all duration-700 reveal-on-scroll opacity-0 translate-y-8">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-screen scale-105 pointer-events-none"
+          >
+            <source
+              src="https://media.gettyimages.com/id/2193248885/video/senior-businesswoman-providing-financial-advice-to-businessman.mp4?s=mp4-640x640-gi&k=20&c=Ahjfvmn1QkjRs9kWj94a31Mf0nmfUGF07ffDHnKXek0="
+              type="video/mp4"
+            />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/95 via-black/75 to-black/40" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            <div className="lg:col-span-6 space-y-3 sm:space-y-4">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-light text-white tracking-tight leading-[1.15]">
+                Your finance is engineered <br />
+                <span className="font-serif italic font-normal text-neutral-300">for chaos.</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed max-w-md">
+                Tinta bon belanja yang pudar, struk yang terselip di saku celana, dan rekap manual di akhir bulan selalu menghabiskan waktu berharga Anda.
+              </p>
+            </div>
+
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="p-5 sm:p-6 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/15 text-white space-y-1 shadow-lg">
+                <p className="text-2xl sm:text-4xl font-light tracking-tight">220+</p>
+                <p className="text-[10px] sm:text-[11px] text-neutral-400 font-light">lembar struk terbuang tiap bulan</p>
+              </div>
+
+              <div className="p-5 sm:p-6 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/15 text-white space-y-1 shadow-lg">
+                <p className="text-2xl sm:text-4xl font-light tracking-tight">150</p>
+                <p className="text-[10px] sm:text-[11px] text-neutral-400 font-light">menit terbuang untuk pembukuan</p>
+              </div>
+
+              <div className="p-5 sm:p-6 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/15 text-white space-y-1 shadow-lg">
+                <p className="text-2xl sm:text-4xl font-light tracking-tight">&lt; 3s</p>
+                <p className="text-[10px] sm:text-[11px] text-neutral-400 font-light">waktu pindai bersama ExpendNote</p>
+              </div>
+
+              <div className="p-5 sm:p-6 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/15 text-white space-y-1 shadow-lg">
+                <p className="text-2xl sm:text-4xl font-light tracking-tight">100%</p>
+                <p className="text-[10px] sm:text-[11px] text-neutral-400 font-light">arsip digital abadi di cloud</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative z-10 pt-8 sm:pt-10 flex flex-wrap items-center gap-3">
+            <a
+              href="#presets"
+              className="px-4 sm:px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white text-xs font-medium hover:bg-white/20 transition inline-flex items-center gap-2"
+            >
+              <span>See workflow preview</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </a>
+            <Link
+              href="/login"
+              className="px-4 sm:px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition inline-flex items-center gap-1.5"
+            >
+              <span>Try OCR engine</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. COMPARISON MATRIX (Norma Characteristic Spec Sheet) */}
+      {/* 5. MAKE ROOM FOR WHAT MATTERS */}
       {/* ========================================================================= */}
-      <section className="py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-3 mb-14">
-          <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-400">
-            03 / Specification
-          </span>
-          <h2 className="text-3xl font-light tracking-tight">Manual vs ExpendNote System</h2>
+      <section id="presets" className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6 transition-all duration-700 reveal-on-scroll opacity-0 translate-y-8">
+          <div className="space-y-2 sm:space-y-3 max-w-xl">
+            <h2 className="text-2xl sm:text-4xl font-normal tracking-tight">
+              What can be Noted? <br />
+              <span className="font-serif italic font-normal">for you.</span>
+            </h2>
+            <p className="text-neutral-500 text-xs sm:text-sm font-light leading-relaxed">
+              Berikut beberapa jenis struk yang bisa Anda catat menggunakan ExpendNote
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <button
+              onClick={() => scrollCarousel("left")}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-black/10 bg-white hover:bg-neutral-100 flex items-center justify-center text-black transition shadow-sm"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scrollCarousel("right")}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-black/10 bg-white hover:bg-neutral-100 flex items-center justify-center text-black transition shadow-sm"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        <div className="rounded-3xl border border-black/[0.08] bg-white overflow-hidden shadow-sm text-xs font-light">
-          <div className="grid grid-cols-3 bg-neutral-100/70 p-4 border-b border-black/[0.06] font-mono text-[11px] text-neutral-500">
-            <div>DIMENSION</div>
-            <div>CONVENTIONAL</div>
-            <div className="font-semibold text-black">EXPENDNOTE AI</div>
-          </div>
+        <div
+          ref={carouselRef}
+          className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory transition-all duration-700 reveal-on-scroll opacity-0 translate-y-8"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {[
-            { dim: "Data Input", old: "Ketik manual per nota (5-10 menit)", now: "Foto & Ekstraksi AI (<3 detik)" },
-            { dim: "Physical Storage", old: "Tumpukan kertas rapuh pudar", now: "Terenkripsi di Cloud Vault" },
-            { dim: "Tax Reconciliation", old: "Merekap manual akhir bulan", now: "Ekspor 1-klik siap audit" },
-            { dim: "Granular Categorization", old: "Rentan human error", now: "Klasifikasi otomatis 99% akurat" },
-          ].map((row, idx) => (
-            <div key={idx} className="grid grid-cols-3 p-4 border-b border-black/[0.04] last:border-0 hover:bg-neutral-50/80 transition">
-              <div className="font-mono text-neutral-400 text-[11px]">{row.dim}</div>
-              <div className="text-neutral-500">{row.old}</div>
-              <div className="font-medium text-neutral-900 flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-black shrink-0" />
-                {row.now}
+            {
+              title: "Business Trip",
+              count: "Nota tol & hotel",
+              desc: "Kumpulkan bon dinas luar kota otomatis untuk klaim reimbursement tanpa pusing.",
+              image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop&q=80",
+            },
+            {
+              title: "Daily Commute",
+              count: "Tiket & ride-hail",
+              desc: "Simpan riwayat tiket transit, ojek online, dan bensin tanpa struk yang tercecer.",
+              image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&auto=format&fit=crop&q=80",
+            },
+            {
+              title: "Culinary & Coffee",
+              count: "Struk resto & kafe",
+              desc: "Klasifikasi otomatis bon makan siang, nongkrong, dan camilan ke pos gaya hidup.",
+              image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&auto=format&fit=crop&q=80",
+            },
+            {
+              title: "Study & Courses",
+              count: "Buku & materi digital",
+              desc: "Pantau pengeluaran self-improvement dan langganan software secara presisi.",
+              image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80",
+            },
+            {
+              title: "Home & Grocery",
+              count: "Belanja bulanan",
+              desc: "Cek detail belanja supermarket hingga ke item diskon dan rincian pajaknya.",
+              image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80",
+            },
+          ].map((card, i) => (
+            <div
+              key={i}
+              className="w-[260px] sm:w-[300px] md:w-[320px] shrink-0 snap-start space-y-3 group cursor-pointer"
+            >
+              <div className="relative h-[320px] sm:h-[380px] rounded-3xl overflow-hidden bg-neutral-200 border border-black/5 shadow-sm">
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+
+                <div className="absolute bottom-4 left-3 right-3 sm:bottom-5 sm:left-4 sm:right-4 p-2 sm:p-2.5 rounded-full bg-white/20 backdrop-blur-xl border border-white/20 text-white flex items-center justify-between text-xs px-3.5 sm:px-4">
+                  <span className="font-medium text-[11px] sm:text-xs">{card.title}</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono text-neutral-300">{card.count}</span>
+                </div>
               </div>
+              <p className="text-[11px] sm:text-xs text-neutral-500 font-light leading-relaxed px-1">
+                {card.desc}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. CONTACT / INQUIRY (Architectural Glass Form) */}
+      {/* 6. CONTACT / INQUIRY */}
       {/* ========================================================================= */}
-      <section id="contact" className="py-24 bg-[#141414] text-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5 space-y-8">
-              <div className="space-y-3">
-                <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-neutral-400">
-                  04 / Inquiry
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-light tracking-tight leading-tight">
-                  Initiate the <br />
-                  <span className="font-serif italic font-normal text-neutral-300">dialogue.</span>
-                </h2>
-                <p className="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
-                  Konsultasikan kebutuhan implementasi API OCR struk atau integrasi finansial korporat Anda.
-                </p>
-              </div>
+      <section id="contact" className="py-20 sm:py-24 bg-[#111111] text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 items-start transition-all duration-700 reveal-on-scroll opacity-0 translate-y-8">
+            <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-400">
+                Contact
+              </span>
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight leading-tight">
+                Get in touch with <br />
+                <span className="font-serif italic font-normal text-neutral-300">our team.</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+                Punya pertanyaan integrasi OCR struk skala besar atau ingin berdiskusi seputar keamanan data Anda?
+              </p>
 
-              <div className="space-y-3 text-xs font-light text-neutral-300">
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4">
-                  <Mail className="w-4 h-4 text-neutral-400" />
-                  <span>support@expendnote.id</span>
+              <div className="space-y-2.5 text-xs font-light text-neutral-300 pt-2">
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-neutral-400 shrink-0" />
+                  <span className="truncate">support@expendnote.id</span>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4">
-                  <Phone className="w-4 h-4 text-neutral-400" />
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <Phone className="w-4 h-4 text-neutral-400 shrink-0" />
                   <span>+62 812-3456-7890</span>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4">
-                  <Clock className="w-4 h-4 text-neutral-400" />
-                  <span>Mon – Fri / 09:00 – 18:00 WIB</span>
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
+                  <span>Senin – Jumat / 09:00 – 18:00 WIB</span>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-7">
-              <div className="p-8 sm:p-10 rounded-3xl bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl">
+              <div className="p-6 sm:p-8 lg:p-9 rounded-3xl bg-white/[0.04] backdrop-blur-2xl border border-white/10 shadow-2xl">
                 {formSubmitted ? (
                   <div className="py-12 text-center space-y-3">
                     <div className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center mx-auto text-sm font-bold">
                       ✓
                     </div>
-                    <p className="text-base font-light">Pesan Terkirim</p>
+                    <p className="text-sm sm:text-base font-light">Pesan Berhasil Terkirim</p>
                     <p className="text-xs text-neutral-400 font-light">
-                      Kami akan mengkaji pesan Anda dalam 24 jam kerja.
+                      Tim kami akan merespons melalui email dalam 24 jam kerja.
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleContactSubmit} className="space-y-5 text-xs font-light">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <form onSubmit={handleContactSubmit} className="space-y-4 text-xs font-light">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                       <div className="space-y-1.5">
                         <label className="text-neutral-400 uppercase tracking-widest text-[10px] font-mono">Nama</label>
                         <input
                           type="text"
                           required
-                          placeholder="Your Name"
-                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-white transition"
+                          placeholder="Nama lengkap"
+                          className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-white transition"
                         />
                       </div>
                       <div className="space-y-1.5">
@@ -363,18 +547,18 @@ export default function LandingIntro() {
                         <input
                           type="email"
                           required
-                          placeholder="nama@domain.com"
-                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-white transition"
+                          placeholder="nama@email.com"
+                          className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-white transition"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-1.5">
                       <label className="text-neutral-400 uppercase tracking-widest text-[10px] font-mono">Kebutuhan</label>
-                      <select className="w-full px-4 py-3 rounded-xl bg-[#1d1d1d] border border-white/10 text-neutral-300 focus:outline-none focus:border-white transition">
-                        <option>Integrasi Enterprise & Bisnis</option>
-                        <option>Akses Pengguna Individual</option>
-                        <option>Konsultasi API OCR</option>
+                      <select className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-[#1c1c1c] border border-white/10 text-neutral-300 focus:outline-none focus:border-white transition">
+                        <option>Pertanyaan Fitur Scan AI</option>
+                        <option>Akun Bisnis & UMKM</option>
+                        <option>Konsultasi Keamanan & Cloud</option>
                       </select>
                     </div>
 
@@ -383,16 +567,16 @@ export default function LandingIntro() {
                       <textarea
                         rows={4}
                         required
-                        placeholder="Deskripsikan kebutuhan Anda..."
-                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-white transition resize-none"
+                        placeholder="Tuliskan pesan Anda..."
+                        className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-white transition resize-none"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 px-6 rounded-full bg-white text-black font-medium hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 text-xs"
+                      className="w-full py-3 sm:py-3.5 px-6 rounded-full bg-white text-black font-medium hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 text-xs"
                     >
-                      <span>Submit Inquiry</span>
+                      <span>Kirim Formulir</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </button>
                   </form>
@@ -404,18 +588,18 @@ export default function LandingIntro() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. MINIMAL FOOTER */}
+      {/* 7. FOOTER */}
       {/* ========================================================================= */}
-      <footer className="py-10 bg-[#141414] border-t border-white/[0.08] text-[11px] font-mono text-neutral-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} EXPENDNOTE CORP. ALL RIGHTS RESERVED.</p>
-          <div className="flex gap-6">
+      <footer className="py-8 bg-[#111111] border-t border-white/[0.07] text-[10px] sm:text-[11px] font-mono text-neutral-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <p>© {new Date().getFullYear()} EXPENDNOTE. ALL RIGHTS RESERVED.</p>
+          <div className="flex gap-4 sm:gap-6">
             <a href="#" className="hover:text-neutral-300 transition">PRIVACY</a>
             <a href="#" className="hover:text-neutral-300 transition">TERMS</a>
-            <a href="#" className="hover:text-neutral-300 transition">SECURITY</a>
+            <a href="#" className="hover:text-neutral-300 transition">STATUS</a>
           </div>
         </div>
       </footer>
     </div>
   );
-} 
+}

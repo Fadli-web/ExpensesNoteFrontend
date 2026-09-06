@@ -33,12 +33,12 @@ export default function CategoryDonutChart({ data = [], totalAmount = 0 }: Categ
   const strokeWidth = 18;
   const circumference = 2 * Math.PI * radius;
 
-  let accumulatedAngle = 0;
-  const itemsWithAngles = data.map((item) => {
-    const angle = accumulatedAngle;
-    accumulatedAngle += (item.percentage / 100) * 360;
-    return { ...item, angle };
-  });
+  const itemsWithAngles: Array<(typeof data)[0] & { angle: number }> = [];
+  let runningAngle = 0;
+  for (const item of data) {
+    itemsWithAngles.push({ ...item, angle: runningAngle });
+    runningAngle += (item.percentage / 100) * 360;
+  }
 
   return (
     <div className="bg-white rounded-[28px] border border-black/[0.06] p-6 flex flex-col justify-between h-full min-h-[380px] shadow-xs">

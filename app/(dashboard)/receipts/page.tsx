@@ -13,10 +13,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
+  Camera,
+  Smartphone,
 } from "lucide-react";
 import ScanReceiptModal from "@/components/ScanReceiptModal";
 import TransactionModal from "@/components/TransactionModal";
 import ReceiptLightbox from "@/components/ReceiptLightbox";
+import CameraCaptureModal from "@/components/CameraCaptureModal";
 import { api } from "@/lib/api";
 import { EXPENSE_CATEGORIES, formatCurrency, formatDate, getCategoryBadgeColor } from "@/lib/formatters";
 import { ReceiptGalleryItem } from "@/lib/types";
@@ -33,8 +36,10 @@ export default function ReceiptsPage() {
   // Modals
   const [isScanOpen, setIsScanOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isDirectCameraOpen, setIsDirectCameraOpen] = useState(false);
   const [selectedReceiptPath, setSelectedReceiptPath] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<{ url: string; merchant?: string; date?: string } | null>(null);
+  const nativeCameraInputRef = React.useRef<HTMLInputElement>(null);
 
   const fetchGallery = useCallback(async () => {
     setIsLoading(true);
@@ -97,16 +102,36 @@ export default function ReceiptsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Opsi 1: Foto Kamera HP */}
+          <button
+            onClick={() => setIsDirectCameraOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-xs transition shadow-xs cursor-pointer"
+          >
+            <Camera className="w-3.5 h-3.5" />
+            <span>Foto Kamera HP</span>
+          </button>
+
+          {/* Opsi 2: Pindai Struk AI */}
           <button
             onClick={() => setIsScanOpen(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111111] text-white font-medium text-xs hover:bg-black transition shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#111111] text-white font-medium text-xs hover:bg-black transition shadow-xs cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>Pindai Struk (AI)</span>
           </button>
         </div>
       </div>
+
+      {/* Hidden Native Camera Input */}
+      <input
+        type="file"
+        ref={nativeCameraInputRef}
+        accept="image/*"
+        capture="environment"
+        onChange={(e) => e.target.files?.[0] && handleUploadDirect(e.target.files[0])}
+        className="hidden"
+      />
 
       {/* Filter & Upload Toolbar */}
       <div className="bg-white rounded-[24px] border border-black/[0.06] p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
@@ -140,17 +165,29 @@ export default function ReceiptsPage() {
           </div>
         </div>
 
-        {/* Quick Direct Upload input */}
-        <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/[0.08] rounded-full text-xs font-medium text-neutral-700 hover:bg-neutral-50 transition shrink-0 shadow-xs">
-          <Upload className="w-3.5 h-3.5 text-neutral-500" />
-          <span>Unggah File Struk</span>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(e) => e.target.files?.[0] && handleUploadDirect(e.target.files[0])}
-            className="hidden"
-          />
-        </label>
+        {/* 2 Opsi Fleksibel: Kamera HP & Unggah Berkas */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsDirectCameraOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-full text-xs font-semibold hover:bg-emerald-100 transition shadow-xs cursor-pointer"
+          >
+            <Camera className="w-3.5 h-3.5 text-emerald-700" />
+            <span>Foto Kamera HP</span>
+          </button>
+
+          <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-black/[0.08] rounded-full text-xs font-medium text-neutral-700 hover:bg-neutral-50 transition shadow-xs">
+            <Upload className="w-3.5 h-3.5 text-neutral-500" />
+            <span>Unggah Berkas</span>
+            <input
+              id="gallery-file-input"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) => e.target.files?.[0] && handleUploadDirect(e.target.files[0])}
+              className="hidden"
+            />
+          </label>
+        </div>
       </div>
 
       {/* Receipts Grid */}
@@ -307,6 +344,19 @@ export default function ReceiptsPage() {
         imageUrl={lightbox?.url || null}
         merchant={lightbox?.merchant}
         date={lightbox?.date}
+      />
+
+      {/* Direct Camera Capture Modal */}
+      <CameraCaptureModal
+        isOpen={isDirectCameraOpen}
+        onClose={() => setIsDirectCameraOpen(false)}
+        onCapture={(file) => {
+          handleUploadDirect(file);
+        }}
+        onSwitchToUpload={() => {
+          const inputEl = document.getElementById("gallery-file-input") as HTMLInputElement;
+          inputEl?.click();
+        }}
       />
     </div>
   );

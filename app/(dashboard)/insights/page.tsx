@@ -73,7 +73,7 @@ export default function InsightsPage() {
         role: "model",
         text: "Halo! Saya Asisten AI Keuangan 🤖\n\nSaya siap membantu menganalisis pola pengeluaran, pos anggaran belanja, dan memberikan rekomendasi penghematan berdasarkan data transaksi riil Anda.\n\n*Catatan: Saya hanya melayani pertanyaan seputar keuangan dan data transaksi Anda. Pertanyaan non-keuangan (seperti resep makanan, hiburan, dll) akan otomatis saya tolak.*",
         is_financial: true,
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        timestamp: "Sekarang",
       },
     ]);
   }, []);
@@ -87,10 +87,10 @@ export default function InsightsPage() {
     if (!textToSend.trim() || isAsking) return;
 
     const userMsg: ChatMessage = {
-      id: "user-" + Date.now(),
+      id: `msg-u-${messages.length + 1}`,
       role: "user",
       text: textToSend.trim(),
-      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      timestamp: "Sekarang",
     };
 
     setMessages((prev) => [...prev, userMsg]);
@@ -107,21 +107,21 @@ export default function InsightsPage() {
       const res = await api.askInsights(textToSend.trim(), history);
 
       const aiMsg: ChatMessage = {
-        id: "ai-" + Date.now(),
+        id: `msg-a-${messages.length + 2}`,
         role: "model",
         text: res.reply || "Tidak ada respons dari asisten AI.",
         is_financial: res.is_financial,
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        timestamp: "Sekarang",
       };
 
       setMessages((prev) => [...prev, aiMsg]);
     } catch (err: any) {
       const errorMsg: ChatMessage = {
-        id: "error-" + Date.now(),
+        id: `msg-e-${messages.length + 2}`,
         role: "model",
         text: `Terjadi kendala saat menghubungi AI: ${err.message || "Silakan periksa koneksi Anda."}`,
         is_financial: true,
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        timestamp: "Sekarang",
       };
       setMessages((prev) => [...prev, errorMsg]);
     } finally {

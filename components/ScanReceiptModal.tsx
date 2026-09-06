@@ -14,7 +14,11 @@ import {
   DollarSign,
   Store,
   Tag,
+  Camera,
+  Smartphone,
+  Image as ImageIcon,
 } from "lucide-react";
+import CameraCaptureModal from "@/components/CameraCaptureModal";
 import { api } from "@/lib/api";
 import { formatCurrency, EXPENSE_CATEGORIES } from "@/lib/formatters";
 import { ReceiptScanResult } from "@/lib/types";
@@ -37,7 +41,16 @@ export default function ScanReceiptModal({
   const [scanResult, setScanResult] = useState<ReceiptScanResult | null>(null);
   const [error, setError] = useState<string>("");
   const [step, setStep] = useState<"upload" | "preview" | "saving">("upload");
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  // Editable fields in preview
+  const [editMerchant, setEditMerchant] = useState("");
+  const [editAmount, setEditAmount] = useState<number | string>("");
+  const [editDate, setEditDate] = useState("");
+  const [editCategory, setEditCategory] = useState("Belanja Harian");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   // Client-side mount guard for React Portal
   useEffect(() => {
@@ -58,12 +71,6 @@ export default function ScanReceiptModal({
       setEditCategory("Belanja Harian");
     }
   }, [isOpen]);
-
-  // Editable fields in preview
-  const [editMerchant, setEditMerchant] = useState("");
-  const [editAmount, setEditAmount] = useState<number | string>("");
-  const [editDate, setEditDate] = useState("");
-  const [editCategory, setEditCategory] = useState("Belanja Harian");
 
   useEffect(() => {
     if (scanResult) {
@@ -217,52 +224,144 @@ export default function ScanReceiptModal({
 
           {step === "upload" && (
             <div className="space-y-4">
-              <div
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed rounded-2xl p-5 sm:p-6 text-center cursor-pointer transition flex flex-col items-center justify-center gap-2.5 ${
-                  selectedFile
-                    ? "border-emerald-500 bg-emerald-50/50"
-                    : "border-gray-200 hover:border-emerald-400 hover:bg-[#f8faf9]"
-                }`}
-              >
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={(e) => e.target.files?.[0] && handleFileChange(e.target.files[0])}
-                  accept="image/jpeg,image/png,image/webp"
-                  className="hidden"
-                />
+              {/* Hidden Inputs */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={(e) => e.target.files?.[0] && handleFileChange(e.target.files[0])}
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+              />
+              <input
+                type="file"
+                ref={cameraInputRef}
+                capture="environment"
+                onChange={(e) => e.target.files?.[0] && handleFileChange(e.target.files[0])}
+                accept="image/*"
+                className="hidden"
+              />
 
-                {previewUrl ? (
-                  <div className="flex flex-col items-center gap-2">
+              {!previewUrl ? (
+                /* Two Prominent Flexible Choice Cards */
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-neutral-600 mb-2">
+                    Pilih metode input foto struk belanja:
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Option 1: Phone Camera / Live Scan */}
+                    <div className="relative group p-5 rounded-2xl border-2 border-emerald-500/30 bg-emerald-50/40 hover:bg-emerald-50/80 hover:border-emerald-500 transition-all flex flex-col justify-between text-left shadow-xs">
+                      <div className="space-y-2 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                          <Camera className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-200/70 text-emerald-900 text-[10px] font-bold mb-1">
+                            Rekomendasi HP
+                          </span>
+                          <h4 className="text-xs sm:text-sm font-bold text-neutral-900">
+                            Foto Kamera HP
+                          </h4>
+                          <p className="text-[11px] text-neutral-600 leading-relaxed mt-0.5">
+                            Nyalakan kamera langsung atau gunakan app kamera bawaan HP untuk jepret struk
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setIsCameraOpen(true)}
+                          className="w-full py-2.5 px-3.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs"
+                        >
+                          <Camera className="w-3.5 h-3.5" />
+                          <span>Buka Kamera Viewfinder</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => cameraInputRef.current?.click()}
+                          className="w-full py-2 px-3 bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-medium rounded-xl transition flex items-center justify-center gap-1.5"
+                        >
+                          <Smartphone className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>App Kamera Bawaan HP</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Option 2: Upload File / Gallery */}
+                    <div
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={handleDrop}
+                      className="relative group p-5 rounded-2xl border-2 border-dashed border-neutral-300 hover:border-neutral-500 bg-[#f8faf9] hover:bg-neutral-100/70 transition-all flex flex-col justify-between text-left shadow-xs"
+                    >
+                      <div className="space-y-2 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-neutral-800 text-white flex items-center justify-center shadow-xs">
+                          <Upload className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="inline-block px-2 py-0.5 rounded-full bg-neutral-200 text-neutral-700 text-[10px] font-bold mb-1">
+                            Penyimpanan File
+                          </span>
+                          <h4 className="text-xs sm:text-sm font-bold text-neutral-900">
+                            Unggah dari Berkas
+                          </h4>
+                          <p className="text-[11px] text-neutral-600 leading-relaxed mt-0.5">
+                            Pilih gambar struk yang sudah tersimpan di galeri foto atau file explorer (JPG, PNG, WebP)
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-2.5 px-3.5 bg-neutral-900 hover:bg-black text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs mt-1"
+                      >
+                        <ImageIcon className="w-3.5 h-3.5" />
+                        <span>Pilih dari Galeri / Dokumen</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Selected File Preview with Retake/Change options */
+                <div className="bg-[#f8faf9] border border-[#e4ebe5] rounded-2xl p-4 flex flex-col items-center gap-3">
+                  <div className="relative group max-h-52 overflow-hidden rounded-xl border border-neutral-200 bg-black/5 flex items-center justify-center p-1">
                     <img
                       src={previewUrl}
                       alt="Preview struk"
-                      className="max-h-40 sm:max-h-48 rounded-xl object-contain shadow-xs border border-gray-100"
+                      className="max-h-48 rounded-lg object-contain shadow-xs"
                     />
-                    <p className="text-xs font-semibold text-emerald-800">
-                      {selectedFile?.name} ({(selectedFile!.size / 1024).toFixed(0)} KB)
-                    </p>
-                    <p className="text-[11px] text-gray-400">Klik untuk mengganti foto struk</p>
                   </div>
-                ) : (
-                  <>
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-700">
-                      <Upload className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm font-bold text-gray-800">
-                        Klik atau seret foto struk ke sini
-                      </p>
-                      <p className="text-[11px] text-gray-400 mt-0.5">
-                        Mendukung format JPG, PNG, WebP (Maksimal 5MB)
-                      </p>
-                    </div>
-                  </>
-                )}
-              </div>
+
+                  <div className="text-center">
+                    <p className="text-xs font-bold text-neutral-800 truncate max-w-xs">
+                      {selectedFile?.name || "Foto Struk Belanja"}
+                    </p>
+                    <p className="text-[11px] text-neutral-500">
+                      {selectedFile ? `${(selectedFile.size / 1024).toFixed(0)} KB • Siap dipindai` : ""}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 w-full pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setIsCameraOpen(true)}
+                      className="flex-1 py-2 px-3 bg-white border border-neutral-200 hover:bg-neutral-100 rounded-xl text-[11px] font-semibold text-neutral-700 transition flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <Camera className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Foto Ulang Kamera</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex-1 py-2 px-3 bg-white border border-neutral-200 hover:bg-neutral-100 rounded-xl text-[11px] font-semibold text-neutral-700 transition flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <Upload className="w-3.5 h-3.5 text-neutral-500" />
+                      <span>Ganti File Galeri</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -437,6 +536,18 @@ export default function ScanReceiptModal({
           )}
         </div>
       </div>
+
+      {/* Live Camera Viewfinder Modal */}
+      <CameraCaptureModal
+        isOpen={isCameraOpen}
+        onClose={() => setIsCameraOpen(false)}
+        onCapture={(file) => {
+          handleFileChange(file);
+        }}
+        onSwitchToUpload={() => {
+          fileInputRef.current?.click();
+        }}
+      />
     </div>,
     document.body
   );

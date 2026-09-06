@@ -203,6 +203,28 @@ export const api = {
     });
   },
 
+  async syncGoogleAuth(params: {
+    access_token?: string;
+    refresh_token?: string;
+    code?: string;
+  }): Promise<AuthResponse> {
+    return apiRequest<AuthResponse>("/api/auth/google-sync", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  },
+
+  async googleOAuth(params: {
+    code?: string;
+    redirect_uri?: string;
+    id_token?: string;
+  }): Promise<AuthResponse> {
+    return apiRequest<AuthResponse>("/api/auth/google-oauth", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  },
+
   async getMe(): Promise<{ user: UserProfile }> {
     return apiRequest<{ user: UserProfile }>("/api/auth/me");
   },
