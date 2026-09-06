@@ -59,9 +59,13 @@ export default function AuthCallbackPage() {
               code,
               redirect_uri: `${window.location.origin}/auth/callback`,
             });
-          } catch (oauthErr) {
-            console.warn("Direct google-oauth failed, trying google-sync fallback:", oauthErr);
-            syncRes = await api.syncGoogleAuth({ code });
+          } catch (oauthErr: any) {
+            console.warn("Direct google-oauth failed, trying fallback:", oauthErr);
+            try {
+              syncRes = await api.syncGoogleAuth({ code });
+            } catch {
+              throw oauthErr;
+            }
           }
         } else if (accessToken) {
           syncRes = await api.syncGoogleAuth({
