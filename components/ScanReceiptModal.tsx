@@ -44,6 +44,21 @@ export default function ScanReceiptModal({
     setMounted(true);
   }, []);
 
+  // Reset all state every time the modal is opened fresh
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      setScanResult(null);
+      setStep("upload");
+      setError("");
+      setEditMerchant("");
+      setEditAmount("");
+      setEditDate("");
+      setEditCategory("Belanja Harian");
+    }
+  }, [isOpen]);
+
   // Editable fields in preview
   const [editMerchant, setEditMerchant] = useState("");
   const [editAmount, setEditAmount] = useState<number | string>("");
@@ -143,6 +158,7 @@ export default function ScanReceiptModal({
 
       // Notify dashboard and other views to refresh
       window.dispatchEvent(new CustomEvent("refresh-transactions"));
+      resetAll();
       onClose();
     } catch (err: any) {
       setError(err.message || "Gagal menyimpan hasil scan");

@@ -14,10 +14,19 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Validasi format email yang ketat: harus ada @, domain, dan TLD (misal .com, .id)
+  const isValidEmail = (val: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim());
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError("Harap isi email dan kata sandi");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError("Format email tidak valid. Gunakan email lengkap, contoh: nama@gmail.com");
       return;
     }
 

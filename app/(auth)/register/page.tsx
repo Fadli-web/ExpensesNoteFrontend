@@ -22,10 +22,19 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Validasi format email yang ketat: harus ada @, domain, dan TLD (misal .com, .id)
+  const isValidEmail = (val: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim());
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError("Email dan kata sandi wajib diisi");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError("Format email tidak valid. Pastikan email mengandung domain lengkap, contoh: nama@gmail.com");
       return;
     }
     if (password.length < 6) {

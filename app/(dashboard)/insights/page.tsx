@@ -71,7 +71,7 @@ export default function InsightsPage() {
       {
         id: "welcome",
         role: "model",
-        text: "Halo! Saya **Asisten AI Keuangan COINEST** 🤖✨\n\nSaya siap membantu menganalisis pola pengeluaran, pos anggaran belanja, dan memberikan rekomendasi penghematan berdasarkan data transaksi riil Anda.\n\n*Catatan: Saya hanya melayani pertanyaan seputar keuangan dan data transaksi Anda. Pertanyaan non-keuangan (seperti resep makanan, hiburan, dll) akan otomatis saya tolak.*",
+        text: "Halo! Saya Asisten AI Keuangan 🤖\n\nSaya siap membantu menganalisis pola pengeluaran, pos anggaran belanja, dan memberikan rekomendasi penghematan berdasarkan data transaksi riil Anda.\n\n*Catatan: Saya hanya melayani pertanyaan seputar keuangan dan data transaksi Anda. Pertanyaan non-keuangan (seperti resep makanan, hiburan, dll) akan otomatis saya tolak.*",
         is_financial: true,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       },
@@ -142,10 +142,6 @@ export default function InsightsPage() {
       label: "🏪 Evaluasi Toko Terbesar",
       query: "Berapa banyak uang yang saya habiskan di toko/merchant terbesar saya?",
     },
-    {
-      label: "🍕 Gimana cara buat pizza? (Uji Blokir)",
-      query: "gimana cara buat pizza",
-    },
   ];
 
   return (
@@ -211,7 +207,7 @@ export default function InsightsPage() {
           </div>
           <div>
             <p className="text-xl font-black text-emerald-800">
-              {isLoadingSummary ? "Menganalisis..." : summaryData?.saving_potential || "Rp 150.000+"}
+              {isLoadingSummary ? "Menganalisis..." : summaryData?.saving_potential || "-"}
             </p>
             <p className="text-[11px] text-gray-400 mt-1">Estimasi efisiensi pengeluaran</p>
           </div>
@@ -229,10 +225,12 @@ export default function InsightsPage() {
             <p className="text-base font-black text-gray-900 truncate">
               {isLoadingSummary
                 ? "..."
-                : summaryData?.context?.categoryBreakdown?.[0]?.category || "Belanja Harian"}
+                : summaryData?.context?.categoryBreakdown?.[0]?.category || "Belum ada data"}
             </p>
             <p className="text-[11px] text-gray-400 mt-1">
-              {summaryData?.context?.categoryBreakdown?.[0]?.percentage || "91%"} dari seluruh transaksi
+              {summaryData?.context?.categoryBreakdown?.[0]?.percentage
+                ? `${summaryData.context.categoryBreakdown[0].percentage} dari seluruh transaksi`
+                : "Tambahkan transaksi untuk melihat analisis"}
             </p>
           </div>
         </div>
@@ -249,10 +247,10 @@ export default function InsightsPage() {
             <p className="text-base font-black text-gray-900 truncate">
               {isLoadingSummary
                 ? "..."
-                : summaryData?.context?.topMerchants?.[0]?.merchant || "TK. SINAR AGUNG"}
+                : summaryData?.context?.topMerchants?.[0]?.merchant || "Belum ada data"}
             </p>
             <p className="text-[11px] text-emerald-700 font-semibold mt-1">
-              {summaryData?.context?.topMerchants?.[0]?.totalFormatted || "Rp 697.000"}
+              {summaryData?.context?.topMerchants?.[0]?.totalFormatted || "Tambahkan transaksi"}
             </p>
           </div>
         </div>
@@ -387,11 +385,10 @@ export default function InsightsPage() {
               type="button"
               onClick={() => handleSendQuestion(q.query)}
               disabled={isAsking}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ${
-                q.label.includes("Pizza")
-                  ? "bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100"
-                  : "bg-[#f4f7f5] text-gray-700 border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-900"
-              }`}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ${q.label.includes("Pizza")
+                ? "bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100"
+                : "bg-[#f4f7f5] text-gray-700 border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-900"
+                }`}
             >
               <span>{q.label}</span>
             </button>
@@ -403,19 +400,17 @@ export default function InsightsPage() {
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex gap-3 max-w-[85%] ${
-                msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
-              }`}
+              className={`flex gap-3 max-w-[85%] ${msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
+                }`}
             >
               {/* Avatar */}
               <div
-                className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-xs ${
-                  msg.role === "user"
-                    ? "bg-[#0e3d25] text-white"
-                    : msg.is_financial === false
+                className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-xs ${msg.role === "user"
+                  ? "bg-[#0e3d25] text-white"
+                  : msg.is_financial === false
                     ? "bg-rose-100 text-rose-700"
                     : "bg-[#c8f53c] text-[#0b1614]"
-                }`}
+                  }`}
               >
                 {msg.role === "user" ? (
                   <User className="w-4 h-4" />
@@ -426,13 +421,12 @@ export default function InsightsPage() {
 
               {/* Message Bubble */}
               <div
-                className={`rounded-2xl p-4 text-xs sm:text-sm leading-relaxed shadow-sm ${
-                  msg.role === "user"
-                    ? "bg-[#0e3d25] text-white rounded-tr-none"
-                    : msg.is_financial === false
+                className={`rounded-2xl p-4 text-xs sm:text-sm leading-relaxed shadow-sm ${msg.role === "user"
+                  ? "bg-[#0e3d25] text-white rounded-tr-none"
+                  : msg.is_financial === false
                     ? "bg-rose-50 border border-rose-200 text-rose-900 rounded-tl-none"
                     : "bg-[#f8faf9] border border-[#e4ebe5] text-gray-800 rounded-tl-none"
-                }`}
+                  }`}
               >
                 {/* Warning tag if question was rejected */}
                 {msg.is_financial === false && (
@@ -443,13 +437,12 @@ export default function InsightsPage() {
                 )}
 
                 <div className="whitespace-pre-line space-y-1.5 font-normal">
-                  {msg.text}
+                  {msg.text.replace(/\*\*/g, "")}
                 </div>
 
                 <div
-                  className={`text-[10px] mt-2 text-right ${
-                    msg.role === "user" ? "text-emerald-300" : "text-gray-400"
-                  }`}
+                  className={`text-[10px] mt-2 text-right ${msg.role === "user" ? "text-emerald-300" : "text-gray-400"
+                    }`}
                 >
                   {msg.timestamp}
                 </div>
