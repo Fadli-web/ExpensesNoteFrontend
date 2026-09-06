@@ -85,14 +85,14 @@ export default function ReceiptsPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold mb-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-800 text-[11px] font-medium border border-emerald-500/20 mb-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Digital Receipt Vault</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-[#0e3d25] tracking-tight">
+          <h2 className="text-2xl font-bold text-[#111111] tracking-tight">
             Galeri Struk Tersimpan
           </h2>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-neutral-500 mt-0.5">
             Arsip digital semua bukti pembayaran dan struk belanja dengan signed URL aman
           </p>
         </div>
@@ -100,26 +100,26 @@ export default function ReceiptsPage() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsScanOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111111] text-white font-medium text-xs hover:bg-black transition shadow-sm"
           >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>Pindai Struk (AI)</span>
           </button>
         </div>
       </div>
 
       {/* Filter & Upload Toolbar */}
-      <div className="expendnote-card p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white rounded-[24px] border border-black/[0.06] p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
         <div className="flex flex-1 items-center gap-3 w-full">
           {/* Search */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Cari struk merchant..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function ReceiptsPage() {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             >
               <option value="">Semua Kategori</option>
               {EXPENSE_CATEGORIES.map((c) => (
@@ -141,8 +141,8 @@ export default function ReceiptsPage() {
         </div>
 
         {/* Quick Direct Upload input */}
-        <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#e4ebe5] rounded-xl text-xs font-bold text-gray-700 hover:bg-[#f4f7f5] transition shrink-0 shadow-xs">
-          <Upload className="w-3.5 h-3.5 text-gray-500" />
+        <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/[0.08] rounded-full text-xs font-medium text-neutral-700 hover:bg-neutral-50 transition shrink-0 shadow-xs">
+          <Upload className="w-3.5 h-3.5 text-neutral-500" />
           <span>Unggah File Struk</span>
           <input
             type="file"
@@ -155,15 +155,15 @@ export default function ReceiptsPage() {
 
       {/* Receipts Grid */}
       {isLoading ? (
-        <div className="expendnote-card p-16 text-center text-gray-400">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2 text-emerald-600" />
-          <p className="font-semibold text-gray-600">Memuat berkas struk...</p>
+        <div className="bg-white rounded-[28px] border border-black/[0.06] p-16 text-center text-neutral-400 shadow-xs">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2 text-[#111111]" />
+          <p className="font-medium text-neutral-600">Memuat berkas struk...</p>
         </div>
       ) : receipts.length === 0 ? (
-        <div className="expendnote-card p-16 text-center text-gray-400">
-          <Upload className="w-10 h-10 mx-auto mb-3 text-gray-300" />
-          <h4 className="text-base font-bold text-gray-700">Belum Ada Struk Tersimpan</h4>
-          <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">
+        <div className="bg-white rounded-[28px] border border-black/[0.06] p-16 text-center text-neutral-400 shadow-xs">
+          <Upload className="w-10 h-10 mx-auto mb-3 text-neutral-300" />
+          <h4 className="text-base font-bold text-neutral-800">Belum Ada Struk Tersimpan</h4>
+          <p className="text-xs text-neutral-400 mt-1 max-w-sm mx-auto">
             Unggah foto struk belanjaan Anda atau gunakan fitur AI Scan untuk pengenalan otomatis.
           </p>
         </div>
@@ -174,7 +174,7 @@ export default function ReceiptsPage() {
             return (
               <div
                 key={rec.id}
-                className="expendnote-card overflow-hidden group flex flex-col justify-between hover:-translate-y-1 transition-transform"
+                className="bg-white rounded-[24px] border border-black/[0.06] overflow-hidden group flex flex-col justify-between hover:-translate-y-1 transition-all duration-200 shadow-xs"
               >
                 {/* Image Container with Zoom overlay */}
                 <div

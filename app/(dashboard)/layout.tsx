@@ -15,26 +15,34 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const handleCreateTransaction = async (data: any) => {
     await api.createTransaction(data);
-    // Refresh window or trigger event
     window.dispatchEvent(new CustomEvent("refresh-transactions"));
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f7f5] flex">
-      {/* Sidebar */}
+    /*
+     * Ink & Paper layout shell:
+     * - bg-[#f0f0ee] warm paper background
+     * - Dark sidebar fixed left (w-64)
+     * - Floating topbar: fixed top-4, z-30, glass pill
+     * - Main content: padding-left for sidebar on desktop, pt-20 for floating topbar
+     */
+    <div className="min-h-screen flex" style={{ background: "#f0f0ee" }}>
+
+      {/* Dark Ink Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 lg:pl-72 transition-all">
-        {/* Topbar */}
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
+
+        {/* Floating Glass Topbar */}
         <Topbar
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           onOpenScan={() => setIsScanOpen(true)}
           onOpenCreate={() => setIsCreateOpen(true)}
         />
 
-        {/* Dynamic Page Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        {/* Page Content — pt-20 to clear floating topbar */}
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 pt-20 pb-12 max-w-screen-xl w-full mx-auto">
           {children}
         </main>
       </div>
@@ -45,7 +53,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         onClose={() => setIsCreateOpen(false)}
         onSubmit={handleCreateTransaction}
       />
-
       <ScanReceiptModal
         isOpen={isScanOpen}
         onClose={() => setIsScanOpen(false)}

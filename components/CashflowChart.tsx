@@ -70,18 +70,18 @@ export default function CashflowChart({ data = [], totalBalance = 0 }: CashflowC
   const areaPath = `${linePath} L ${coords[coords.length - 1]?.x || width} ${height - paddingY} L ${coords[0]?.x || 0} ${height - paddingY} Z`;
 
   return (
-    <div className="expendnote-card p-6 flex flex-col justify-between">
+    <div className="bg-white rounded-[28px] border border-black/[0.06] p-6 flex flex-col justify-between shadow-xs">
       {/* Chart Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <div>
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Tren Pengeluaran Harian
+          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
+            CASHFLOW DYNAMICS
           </span>
           <div className="flex items-baseline gap-2 mt-1">
-            <h3 className="text-2xl font-black text-[#0e3d25]">
+            <h3 className="text-2xl font-bold tracking-tight text-[#111111]">
               {formatCurrency(totalBalance)}
             </h3>
-            <span className="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-medium text-neutral-600 bg-neutral-100 px-2.5 py-0.5 rounded-full">
               Bulan Ini
             </span>
           </div>
@@ -89,30 +89,30 @@ export default function CashflowChart({ data = [], totalBalance = 0 }: CashflowC
 
         {/* Range switcher & legend */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 text-xs text-gray-600">
+          <div className="flex items-center gap-3 text-xs text-neutral-500">
             <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#16a34a]"></span>
-              <span>Pengeluaran</span>
+              <span className="w-2 h-2 rounded-full bg-[#111111]"></span>
+              <span className="text-[11px] font-medium">Pengeluaran</span>
             </span>
           </div>
 
-          <div className="flex items-center bg-[#f4f7f5] p-1 rounded-xl border border-[#e4ebe5]">
+          <div className="flex items-center bg-[#f4f4f2] p-1 rounded-full">
             <button
               onClick={() => setActiveRange("7d")}
-              className={`px-3 py-1 text-xs font-semibold rounded-lg transition ${
+              className={`px-3 py-1 text-xs font-medium rounded-full transition ${
                 activeRange === "7d"
-                  ? "bg-white text-[#0e3d25] shadow-xs"
-                  : "text-gray-500 hover:text-gray-900"
+                  ? "bg-white text-[#111111] shadow-xs"
+                  : "text-neutral-500 hover:text-neutral-900"
               }`}
             >
               7 Hari
             </button>
             <button
               onClick={() => setActiveRange("30d")}
-              className={`px-3 py-1 text-xs font-semibold rounded-lg transition ${
+              className={`px-3 py-1 text-xs font-medium rounded-full transition ${
                 activeRange === "30d"
-                  ? "bg-white text-[#0e3d25] shadow-xs"
-                  : "text-gray-500 hover:text-gray-900"
+                  ? "bg-white text-[#111111] shadow-xs"
+                  : "text-neutral-500 hover:text-neutral-900"
               }`}
             >
               Bulan Ini

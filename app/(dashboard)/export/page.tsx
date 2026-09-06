@@ -130,14 +130,13 @@ export default function ExportPage() {
     <div className="space-y-6 max-w-4xl mx-auto animate-fade-in pb-12">
       {/* Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold mb-2">
-          <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
-          <span>Laporan Keuangan</span>
-        </div>
-        <h2 className="text-xl sm:text-2xl font-black text-[#0e3d25] tracking-tight">
+        <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-400">
+          DATA PORTABILITY
+        </span>
+        <h2 className="text-2xl font-bold text-[#111111] tracking-tight">
           Export Data Transaksi ke CSV
         </h2>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-neutral-500 mt-1">
           Unduh rekapan pengeluaran Anda dalam format CSV UTF-8 yang kompatibel langsung dengan WPS Office, Microsoft Excel, Google Sheets, & Numbers.
         </p>
       </div>
@@ -171,41 +170,41 @@ export default function ExportPage() {
             <div
               key={opt.id}
               onClick={() => setActivePeriod(opt.id)}
-              className={`expendnote-card p-5 cursor-pointer flex flex-col justify-between transition-all ${
+              className={`p-5 rounded-[24px] cursor-pointer flex flex-col justify-between transition-all duration-200 bg-white ${
                 isSelected
-                  ? "border-2 border-emerald-600 ring-4 ring-emerald-500/10 bg-[#f8faf9]"
-                  : "hover:border-emerald-300"
+                  ? "border-2 border-[#111111] shadow-sm bg-[#fafaf8]"
+                  : "border border-black/[0.06] hover:border-black/20"
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span
-                    className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                    className={`text-[10px] font-medium px-2.5 py-0.5 rounded-full ${
                       isSelected
-                        ? "bg-emerald-600 text-white"
-                        : "bg-gray-100 text-gray-600"
+                        ? "bg-[#111111] text-white"
+                        : "bg-neutral-100 text-neutral-600"
                     }`}
                   >
                     {opt.badge}
                   </span>
-                  <div className="p-2 rounded-xl bg-white border border-[#e4ebe5] text-[#0e3d25]">
+                  <div className="p-2 rounded-xl bg-neutral-100 text-neutral-800">
                     <Icon className="w-4 h-4" />
                   </div>
                 </div>
 
-                <h3 className="font-extrabold text-sm text-gray-900 mb-1">{opt.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{opt.desc}</p>
+                <h3 className="font-bold text-sm text-[#111111] mb-1">{opt.title}</h3>
+                <p className="text-xs text-neutral-500 leading-relaxed">{opt.desc}</p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-emerald-700">
+              <div className="pt-4 mt-4 border-t border-black/[0.04] flex items-center justify-between">
+                <span className="text-[11px] font-medium text-neutral-600">
                   {isSelected ? "Pilihan Aktif" : "Pilih Periode Ini"}
                 </span>
                 <span
                   className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                     isSelected
-                      ? "border-emerald-600 bg-emerald-600 text-white"
-                      : "border-gray-300"
+                      ? "border-[#111111] bg-[#111111] text-white"
+                      : "border-neutral-300"
                   }`}
                 >
                   {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white"></span>}
@@ -218,34 +217,34 @@ export default function ExportPage() {
 
       {/* Custom Range Picker (Visible only when 'custom' selected) */}
       {activePeriod === "custom" && (
-        <div className="expendnote-card p-6 border-2 border-emerald-600 animate-fade-in space-y-4">
-          <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-emerald-600" />
+        <div className="p-6 rounded-[28px] bg-white border-2 border-[#111111] animate-fade-in space-y-4 shadow-sm">
+          <h4 className="text-sm font-bold text-[#111111] flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-neutral-700" />
             <span>Tentukan Rentang Tanggal Kustom</span>
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Dari Tanggal (Start Date)
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Sampai Tanggal (End Date)
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20"
               />
             </div>
           </div>
@@ -253,35 +252,35 @@ export default function ExportPage() {
       )}
 
       {/* Live Data Preview Banner */}
-      <div className="expendnote-card p-5 bg-[#f8faf9] border border-[#e4ebe5] space-y-3">
+      <div className="p-5 rounded-[28px] bg-white border border-black/[0.06] space-y-3 shadow-xs">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-emerald-600" />
-            <h4 className="text-xs font-bold text-gray-900">
+            <h4 className="text-xs font-bold text-[#111111]">
               Pratinjau Data yang Siap Diekspor
             </h4>
           </div>
-          <span className="text-xs font-black text-emerald-800">
+          <span className="text-xs font-bold text-[#111111]">
             {isLoadingPreview ? "Memuat..." : `${transactions.length} Transaksi (${formatCurrency(totalAmount)})`}
           </span>
         </div>
 
         {transactions.length > 0 && (
-          <div className="max-h-40 overflow-y-auto divide-y divide-gray-100 text-xs bg-white rounded-xl border border-gray-100">
+          <div className="max-h-40 overflow-y-auto divide-y divide-black/[0.04] text-xs bg-[#fafaf8] rounded-2xl border border-black/[0.04]">
             {transactions.slice(0, 5).map((t) => (
               <div key={t.id} className="p-2.5 flex items-center justify-between">
                 <div>
-                  <span className="font-bold text-gray-800">{t.merchant}</span>
-                  <span className="text-gray-400 text-[11px] ml-2">({t.category})</span>
+                  <span className="font-bold text-neutral-900">{t.merchant}</span>
+                  <span className="text-neutral-400 text-[11px] ml-2">({t.category})</span>
                 </div>
                 <div className="text-right">
-                  <span className="font-black text-emerald-700">{formatCurrency(t.amount)}</span>
-                  <span className="text-gray-400 text-[10px] block">{t.transaction_date || "-"}</span>
+                  <span className="font-bold text-[#111111]">{formatCurrency(t.amount)}</span>
+                  <span className="text-neutral-400 text-[10px] block">{t.transaction_date || "-"}</span>
                 </div>
               </div>
             ))}
             {transactions.length > 5 && (
-              <div className="p-2 text-center text-[11px] text-gray-400 font-medium bg-gray-50">
+              <div className="p-2 text-center text-[11px] text-neutral-400 font-medium bg-[#f4f4f2]">
                 + {transactions.length - 5} transaksi lainnya akan disertakan dalam file CSV
               </div>
             )}
@@ -290,14 +289,14 @@ export default function ExportPage() {
       </div>
 
       {/* Download CTA Button */}
-      <div className="expendnote-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-br from-white to-[#f4f7f5]">
+      <div className="p-6 rounded-[28px] bg-white border border-black/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-neutral-100 flex items-center justify-center text-neutral-800 shrink-0">
             <Download className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-gray-900">Siap Mengunduh Data</h4>
-            <p className="text-xs text-gray-500">
+            <h4 className="text-sm font-bold text-[#111111]">Siap Mengunduh Data</h4>
+            <p className="text-xs text-neutral-400">
               Format CSV standar UTF-8 lengkap dengan nama toko, kategori, nominal, metode pembayaran, dan tanggal
             </p>
           </div>
@@ -306,7 +305,7 @@ export default function ExportPage() {
         <button
           onClick={() => handleExport()}
           disabled={isDownloading || transactions.length === 0}
-          className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#0e3d25] hover:bg-[#155333] text-white font-bold text-xs transition shadow-md flex items-center justify-center gap-2 disabled:opacity-50 shrink-0 cursor-pointer"
+          className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#111111] hover:bg-black text-white font-medium text-xs transition shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 shrink-0 cursor-pointer"
         >
           {isDownloading ? (
             <span>Menyiapkan File...</span>

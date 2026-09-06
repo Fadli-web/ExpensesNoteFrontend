@@ -125,13 +125,16 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Top Header & Actions */}
+      {/* Header & Quick Action Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-[#0e3d25] tracking-tight">
+          <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-400">
+            RECORD BOOK
+          </span>
+          <h2 className="text-2xl font-bold text-[#111111] tracking-tight">
             Daftar Transaksi
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-neutral-500 mt-0.5">
             Kelola seluruh catatan belanja dan riwayat pengeluaran Anda
           </p>
         </div>
@@ -139,7 +142,7 @@ export default function TransactionsPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             onClick={() => setIsScanOpen(true)}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-emerald-100 text-emerald-800 font-bold text-xs hover:bg-emerald-200 transition shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 font-medium text-xs hover:bg-emerald-500/20 transition shadow-xs"
           >
             <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
             <span>Scan AI</span>
@@ -150,7 +153,7 @@ export default function TransactionsPage() {
               setEditingTransaction(null);
               setIsCreateOpen(true);
             }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#0e3d25] text-white font-bold text-xs hover:bg-[#155333] transition shadow-sm"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#111111] text-white font-medium text-xs hover:bg-black transition shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Manual</span>
@@ -158,26 +161,26 @@ export default function TransactionsPage() {
 
           <a
             href="/export"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-white border border-[#e4ebe5] text-gray-700 font-bold text-xs hover:bg-[#f4f7f5] transition shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-black/[0.08] text-neutral-700 font-medium text-xs hover:bg-neutral-50 transition shadow-xs"
           >
-            <Download className="w-3.5 h-3.5 text-gray-500" />
+            <Download className="w-3.5 h-3.5 text-neutral-500" />
             <span>Export</span>
           </a>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="expendnote-card p-4">
+      <div className="bg-white rounded-[24px] border border-black/[0.06] p-4 shadow-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {/* Search Merchant */}
           <div className="lg:col-span-2 relative">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Cari toko / merchant..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             />
           </div>
 
@@ -186,7 +189,7 @@ export default function TransactionsPage() {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             >
               <option value="">Semua Kategori</option>
               {EXPENSE_CATEGORIES.map((c) => (
@@ -202,7 +205,7 @@ export default function TransactionsPage() {
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-full px-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             >
               <option value="">Semua Metode</option>
               {PAYMENT_METHODS.map((pm) => (
@@ -220,7 +223,7 @@ export default function TransactionsPage() {
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               placeholder="Dari"
-              className="w-full px-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             />
           </div>
 
@@ -231,7 +234,7 @@ export default function TransactionsPage() {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               placeholder="Sampai"
-              className="w-full px-3 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
             />
             {(search || category || paymentMethod || startDate || endDate) && (
               <button
@@ -247,10 +250,10 @@ export default function TransactionsPage() {
       </div>
 
       {/* Main Transactions Table */}
-      <div className="expendnote-card overflow-hidden">
+      <div className="bg-white rounded-[28px] border border-black/[0.06] overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#f8faf9] border-b border-[#e4ebe5] text-gray-500 font-bold uppercase text-[11px] tracking-wider">
+            <thead className="bg-[#fafaf8] border-b border-black/[0.04] text-neutral-400 font-medium uppercase text-[10px] tracking-wider">
               <tr>
                 <th className="py-3.5 px-4">Merchant & Catatan</th>
                 <th className="py-3.5 px-4">Kategori</th>
@@ -262,7 +265,7 @@ export default function TransactionsPage() {
                 <th className="py-3.5 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-black/[0.04]">
               {isLoading ? (
                 <tr>
                   <td colSpan={8} className="py-12 text-center text-gray-400">

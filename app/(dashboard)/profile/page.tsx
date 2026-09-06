@@ -138,18 +138,21 @@ export default function ProfilePage() {
     <div className="space-y-6 max-w-4xl mx-auto animate-fade-in">
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-[#0e3d25] tracking-tight">
+        <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-400">
+          ACCOUNT SETTINGS
+        </span>
+        <h2 className="text-2xl font-bold text-[#111111] tracking-tight">
           Profil & Pengaturan
         </h2>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-neutral-500 mt-0.5">
           Kelola informasi akun Anda, keamanan kata sandi, dan konfigurasi API server
         </p>
       </div>
 
       {/* Profile Overview Card */}
-      <div className="expendnote-card p-6 flex flex-col sm:flex-row items-center gap-6">
+      <div className="bg-white rounded-[28px] border border-black/[0.06] p-6 flex flex-col sm:flex-row items-center gap-6 shadow-xs">
         <div className="relative">
-          <div className="w-24 h-24 rounded-full bg-emerald-700 text-white flex items-center justify-center text-3xl font-black overflow-hidden border-4 border-emerald-100 shadow-md">
+          <div className="w-24 h-24 rounded-full bg-[#111111] text-white flex items-center justify-center text-3xl font-bold overflow-hidden shadow-sm">
             {user?.avatar_url ? (
               <img
                 src={user.avatar_url}
@@ -160,7 +163,7 @@ export default function ProfilePage() {
               (user?.full_name?.charAt(0) || "A").toUpperCase()
             )}
           </div>
-          <label className="absolute bottom-0 right-0 p-2 bg-[#0e3d25] text-white rounded-full hover:bg-emerald-700 cursor-pointer transition shadow-md">
+          <label className="absolute bottom-0 right-0 p-2 bg-[#111111] text-white rounded-full hover:bg-black cursor-pointer transition shadow-md">
             <Camera className="w-4 h-4" />
             <input
               type="file"
@@ -173,19 +176,19 @@ export default function ProfilePage() {
 
         <div className="text-center sm:text-left space-y-1 flex-1">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <h3 className="text-lg font-extrabold text-gray-900">
+            <h3 className="text-lg font-bold text-[#111111]">
               {user?.full_name || user?.email?.split("@")[0] || "Pengguna"}
             </h3>
           </div>
-          <p className="text-xs text-gray-500 flex items-center justify-center sm:justify-start gap-1.5">
-            <Mail className="w-3.5 h-3.5 text-gray-400" />
+          <p className="text-xs text-neutral-500 flex items-center justify-center sm:justify-start gap-1.5">
+            <Mail className="w-3.5 h-3.5 text-neutral-400" />
             <span>{user?.email || "-"}</span>
           </p>
-          <p className="text-[11px] text-emerald-700 font-semibold pt-1">
+          <p className="text-[11px] text-emerald-700 font-medium pt-1">
             Status Akun: Terverifikasi & Aktif
           </p>
           {isUploadingAvatar && (
-            <p className="text-xs text-emerald-600 font-semibold animate-pulse">
+            <p className="text-xs text-neutral-600 font-medium animate-pulse">
               Mengunggah avatar baru...
             </p>
           )}
@@ -195,49 +198,49 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Update Profile Form */}
-        <div className="expendnote-card p-6 space-y-4">
-          <h4 className="text-sm font-bold text-[#0e3d25] flex items-center gap-2">
-            <User className="w-4 h-4 text-emerald-600" />
+        <div className="bg-white rounded-[28px] border border-black/[0.06] p-6 space-y-4 shadow-xs">
+          <h4 className="text-sm font-bold text-[#111111] flex items-center gap-2">
+            <User className="w-4 h-4 text-neutral-600" />
             <span>Informasi Personal</span>
           </h4>
 
           {profileSuccess && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-2xl flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>Profil berhasil diperbarui!</span>
             </div>
           )}
 
           {profileError && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl">
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-2xl">
               {profileError}
             </div>
           )}
 
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Nama Lengkap
               </label>
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Alamat Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
               />
-              <p className="text-[10px] text-gray-400 mt-1">
+              <p className="text-[10px] text-neutral-400 mt-1">
                 Perubahan email akan membutuhkan verifikasi ke alamat baru.
               </p>
             </div>
@@ -245,7 +248,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={isSavingProfile}
-              className="w-full py-2.5 px-4 bg-[#0e3d25] text-white text-xs font-bold rounded-xl hover:bg-[#155333] transition flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-2.5 px-4 bg-[#111111] hover:bg-black text-white text-xs font-medium rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
             >
               <Save className="w-3.5 h-3.5" />
               <span>{isSavingProfile ? "Menyimpan..." : "Perbarui Profil"}</span>
@@ -254,28 +257,28 @@ export default function ProfilePage() {
         </div>
 
         {/* Change Password Form */}
-        <div className="expendnote-card p-6 space-y-4">
-          <h4 className="text-sm font-bold text-[#0e3d25] flex items-center gap-2">
-            <Lock className="w-4 h-4 text-emerald-600" />
+        <div className="bg-white rounded-[28px] border border-black/[0.06] p-6 space-y-4 shadow-xs">
+          <h4 className="text-sm font-bold text-[#111111] flex items-center gap-2">
+            <Lock className="w-4 h-4 text-neutral-600" />
             <span>Ganti Kata Sandi</span>
           </h4>
 
           {passwordSuccess && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-2xl flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>Kata sandi berhasil diganti!</span>
             </div>
           )}
 
           {passwordError && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl">
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-2xl">
               {passwordError}
             </div>
           )}
 
           <form onSubmit={handleChangePassword} className="space-y-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Password Saat Ini
               </label>
               <input
@@ -284,12 +287,12 @@ export default function ProfilePage() {
                 placeholder="••••••••"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-3.5 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Password Baru (Min. 8 Karakter)
               </label>
               <input
@@ -299,12 +302,12 @@ export default function ProfilePage() {
                 placeholder="••••••••"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-3.5 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
                 Konfirmasi Password Baru
               </label>
               <input
@@ -314,14 +317,14 @@ export default function ProfilePage() {
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3.5 py-2 bg-[#f8faf9] border border-[#e4ebe5] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-[#f4f4f2] border-none rounded-xl text-xs text-[#111111] focus:outline-none focus:bg-white focus:ring-1 focus:ring-black/20 transition"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSavingPassword}
-              className="w-full py-2.5 px-4 bg-gray-800 text-white text-xs font-bold rounded-xl hover:bg-black transition flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
+              className="w-full py-2.5 px-4 bg-[#111111] hover:bg-black text-white text-xs font-medium rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 mt-2 cursor-pointer shadow-sm"
             >
               <Shield className="w-3.5 h-3.5 text-emerald-400" />
               <span>{isSavingPassword ? "Memproses..." : "Update Password"}</span>

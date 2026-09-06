@@ -77,42 +77,54 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Top Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-emerald-900 via-[#0e3d25] to-[#14532d] text-white p-6 rounded-3xl shadow-sm relative overflow-hidden">
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-semibold mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-            <span>AI Smart Expense Tracker</span>
+      {/* Page Header — nor.ma split ink + paper style */}
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 mb-2">
+        {/* Left: dark ink hero */}
+        <div
+          className="relative overflow-hidden rounded-[28px] p-6 sm:p-7 flex flex-col justify-between min-h-[120px]"
+          style={{ background: "#111111" }}
+        >
+          {/* Glow orbs */}
+          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-emerald-500/8 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-1/2 w-32 h-16 rounded-full bg-emerald-400/5 blur-2xl pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/8 text-emerald-400 text-[10px] font-semibold mb-3 border border-white/8">
+              <Sparkles className="w-3 h-3" />
+              <span>AI Expense Tracker</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
+              Ringkasan Keuangan Anda
+            </h2>
+            <p className="text-[12px] text-white/35 mt-1.5 max-w-sm leading-relaxed">
+              Semua transaksi tercatat otomatis. Gunakan Scan AI untuk mendeteksi struk dalam hitungan detik.
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-            Ringkasan Keuangan Anda
-          </h2>
-          <p className="text-xs sm:text-sm text-emerald-100/80 mt-1 max-w-xl">
-            Semua transaksi tercatat secara otomatis. Gunakan scan AI untuk mendeteksi struk belanjaan dalam hitungan detik.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2.5 relative z-10">
+        {/* Right: paper quick actions */}
+        <div className="flex sm:flex-col gap-2 sm:gap-2 sm:justify-center">
           <button
             onClick={loadData}
             disabled={isLoading}
-            className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 transition text-white"
             title="Refresh Data"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-[12px] font-semibold text-[#555] hover:text-[#111] hover:bg-black/8 transition"
+            style={{ background: "#e8e8e6", border: "1px solid rgba(0,0,0,0.07)" }}
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
           </button>
           <Link
             href="/transactions"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white text-[#0e3d25] font-bold text-xs hover:bg-emerald-50 transition shadow-sm"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-[12px] font-semibold text-white transition hover:opacity-90"
+            style={{ background: "#111111" }}
           >
             <span>Semua Transaksi</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-
-        {/* Decorative background blur */}
-        <div className="absolute right-0 top-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
       </div>
+
 
       {/* 4 Stat Cards */}
       <DashboardStatCards
@@ -144,29 +156,28 @@ export default function DashboardPage() {
 
       {/* Tables & Secondary Cards Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left: Recent Transactions Table */}
         <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-          <div className="expendnote-card p-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="norma-card-white p-6">
+            <div className="flex items-center justify-between mb-5">
               <div>
-                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-[#aaa] uppercase tracking-widest">
                   Riwayat Terbaru
                 </span>
-                <h3 className="text-base font-bold text-[#0e3d25]">Recent Transactions</h3>
+                <h3 className="text-[15px] font-semibold tracking-tight text-[#111] mt-0.5">Recent Transactions</h3>
               </div>
               <Link
                 href="/transactions"
-                className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+                className="inline-flex items-center gap-1 text-[12px] font-semibold text-[#555] hover:text-[#111] transition"
               >
                 <span>Lihat Semua</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto -mx-1">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-gray-100 text-gray-400 font-semibold uppercase text-[10px] tracking-wider">
+                  <tr className="border-b border-black/5 text-[#bbb] font-semibold uppercase text-[10px] tracking-wider">
                     <th className="pb-3 pl-1">Merchant</th>
                     <th className="pb-3">Kategori</th>
                     <th className="pb-3">Tanggal</th>
@@ -175,42 +186,42 @@ export default function DashboardPage() {
                     <th className="pb-3 text-center">Struk</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-black/[0.04]">
                   {recentTransactions.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-8 text-center text-gray-400 text-xs">
-                        Belum ada transaksi tercatat. Mulai dengan Scan AI atau Tambah Manual.
+                      <td colSpan={6} className="py-10 text-center text-[#bbb] text-xs">
+                        Belum ada transaksi. Mulai dengan Scan AI atau Tambah Manual.
                       </td>
                     </tr>
                   ) : (
                     recentTransactions.slice(0, 5).map((tx) => {
                       const badge = getCategoryBadgeColor(tx.category);
                       return (
-                        <tr key={tx.id} className="hover:bg-[#f8faf9] transition-colors">
+                        <tr key={tx.id} className="hover:bg-black/[0.02] transition-colors">
                           <td className="py-3.5 pl-1">
-                            <div className="font-bold text-gray-900">{tx.merchant}</div>
+                            <div className="font-semibold text-[#111]">{tx.merchant}</div>
                             {tx.notes && (
-                              <div className="text-[11px] text-gray-400 truncate max-w-[150px]">
+                              <div className="text-[11px] text-[#bbb] truncate max-w-[150px] mt-0.5">
                                 {tx.notes}
                               </div>
                             )}
                           </td>
                           <td className="py-3.5">
                             <span
-                              className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${badge.bg} ${badge.border}`}
+                              className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold border ${badge.bg} ${badge.border}`}
                             >
                               {tx.category}
                             </span>
                           </td>
-                          <td className="py-3.5 text-gray-500 font-medium">
+                          <td className="py-3.5 text-[#999] font-medium">
                             {formatDate(tx.transaction_date)}
                           </td>
                           <td className="py-3.5">
-                            <span className="text-gray-600 bg-gray-100 px-2 py-0.5 rounded-md text-[11px] font-medium">
+                            <span className="text-[#888] bg-black/5 px-2 py-0.5 rounded-lg text-[11px] font-medium">
                               {tx.payment_method || "Cash"}
                             </span>
                           </td>
-                          <td className="py-3.5 text-right font-black text-[#0e3d25]">
+                          <td className="py-3.5 text-right font-bold text-[#111]">
                             -{formatCurrency(tx.amount)}
                           </td>
                           <td className="py-3.5 text-center">
@@ -223,13 +234,13 @@ export default function DashboardPage() {
                                     date: formatDate(tx.transaction_date),
                                   })
                                 }
-                                className="inline-flex items-center gap-1 text-emerald-600 font-bold hover:underline"
+                                className="inline-flex items-center gap-1 text-emerald-600 font-semibold hover:underline"
                               >
-                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                <ShieldCheck className="w-3.5 h-3.5" />
                                 <span className="text-[11px]">Foto</span>
                               </button>
                             ) : (
-                              <span className="text-gray-300 text-[11px]">-</span>
+                              <span className="text-[#ddd] text-[11px]">—</span>
                             )}
                           </td>
                         </tr>
@@ -241,6 +252,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+
 
         {/* Right: Digital Card + Top Merchants */}
         <div className="lg:col-span-5 xl:col-span-4 space-y-6">

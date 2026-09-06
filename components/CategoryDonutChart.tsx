@@ -41,26 +41,26 @@ export default function CategoryDonutChart({ data = [], totalAmount = 0 }: Categ
   });
 
   return (
-    <div className="expendnote-card p-6 flex flex-col justify-between h-full min-h-[380px]">
+    <div className="bg-white rounded-[28px] border border-black/[0.06] p-6 flex flex-col justify-between h-full min-h-[380px] shadow-xs">
       <div className="flex items-center justify-between mb-2">
         <div>
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Distribusi Kategori
+          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
+            BREAKDOWN
           </span>
-          <h3 className="text-base font-bold text-[#0e3d25]">Expense Breakdown</h3>
+          <h3 className="text-base font-bold text-[#111111] tracking-tight">Expense Distribution</h3>
         </div>
-        <span className="text-xs text-emerald-700 font-bold bg-emerald-100 px-2.5 py-1 rounded-full">
+        <span className="text-[10px] text-neutral-600 font-medium bg-neutral-100 px-2.5 py-0.5 rounded-full">
           Aktif
         </span>
       </div>
 
       {!hasData ? (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center my-auto">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
+          <div className="w-14 h-14 rounded-2xl bg-neutral-50 text-neutral-400 flex items-center justify-center mb-3">
             <PieChart className="w-7 h-7" />
           </div>
-          <p className="text-sm font-bold text-gray-800">Belum Ada Pengeluaran</p>
-          <p className="text-xs text-gray-400 mt-1 max-w-[220px]">
+          <p className="text-sm font-bold text-neutral-800">Belum Ada Pengeluaran</p>
+          <p className="text-xs text-neutral-400 mt-1 max-w-[220px]">
             Distribusi kategori pengeluaran Anda akan otomatis muncul di sini setelah mencatat transaksi.
           </p>
         </div>

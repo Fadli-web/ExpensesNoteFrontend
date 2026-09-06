@@ -146,18 +146,18 @@ export default function InsightsPage() {
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-[#0e3d25] to-[#164e32] text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden">
-        <div className="absolute -right-12 -top-12 w-48 h-48 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Header Banner - Dark Ink Norma Aesthetic */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-[#111111] text-white p-6 sm:p-8 rounded-[32px] border border-white/5 relative overflow-hidden shadow-sm">
+        <div className="absolute -right-12 -top-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 space-y-2 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-[#c8f53c] text-xs font-bold border border-emerald-400/30">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-emerald-300 text-xs font-medium border border-white/10">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>AI Financial Intelligence</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             Smart Financial Insights
           </h1>
-          <p className="text-xs sm:text-sm text-emerald-100/80 leading-relaxed">
+          <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
             Analisis cerdas berdasarkan transaksi nyata Anda. Dapatkan evaluasi kesehatan finansial, rekomendasi penghematan otomatis, dan konsultasi keuangan dengan Gemini AI.
           </p>
         </div>
@@ -166,7 +166,7 @@ export default function InsightsPage() {
           <button
             onClick={fetchSummary}
             disabled={isLoadingSummary}
-            className="px-5 py-2.5 rounded-2xl bg-[#c8f53c] hover:bg-[#b5e230] text-[#0b1614] text-xs font-bold transition flex items-center gap-2 shadow-lg disabled:opacity-60 cursor-pointer"
+            className="px-5 py-2.5 rounded-full bg-white hover:bg-neutral-100 text-black text-xs font-medium transition flex items-center gap-2 shadow-sm disabled:opacity-60 cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoadingSummary ? "animate-spin" : ""}`} />
             <span>Perbarui Analisis</span>
@@ -177,57 +177,57 @@ export default function InsightsPage() {
       {/* Top 4 KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Health Score */}
-        <div className="bg-white p-5 rounded-3xl border border-[#e5ebe7] shadow-sm space-y-3">
+        <div className="bg-white p-5 rounded-[28px] border border-black/[0.06] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-gray-500">Skor Finansial</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">
+            <span className="text-xs font-medium text-neutral-500">Skor Finansial</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold text-xs">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
             </div>
           </div>
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-[#0e3d25]">
+              <span className="text-3xl font-bold tracking-tight text-[#111111]">
                 {isLoadingSummary ? "--" : summaryData?.health_score || 75}
               </span>
-              <span className="text-xs text-gray-400 font-bold">/ 100</span>
+              <span className="text-xs text-neutral-400 font-medium">/ 100</span>
             </div>
-            <span className="inline-block mt-1 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <span className="inline-block mt-1 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60">
               {isLoadingSummary ? "Menghitung..." : summaryData?.financial_health || "Terkendali"}
             </span>
           </div>
         </div>
 
         {/* Card 2: Saving Potential */}
-        <div className="bg-white p-5 rounded-3xl border border-[#e5ebe7] shadow-sm space-y-3">
+        <div className="bg-white p-5 rounded-[28px] border border-black/[0.06] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-gray-500">Potensi Hemat / Bulan</span>
-            <div className="w-8 h-8 rounded-xl bg-[#e8f5ec] text-[#16a34a] flex items-center justify-center">
+            <span className="text-xs font-medium text-neutral-500">Potensi Hemat / Bulan</span>
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center">
               <PiggyBank className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-xl font-black text-emerald-800">
+            <p className="text-xl font-bold tracking-tight text-emerald-700">
               {isLoadingSummary ? "Menganalisis..." : summaryData?.saving_potential || "-"}
             </p>
-            <p className="text-[11px] text-gray-400 mt-1">Estimasi efisiensi pengeluaran</p>
+            <p className="text-[11px] text-neutral-400 mt-1">Estimasi efisiensi pengeluaran</p>
           </div>
         </div>
 
         {/* Card 3: Top Category */}
-        <div className="bg-white p-5 rounded-3xl border border-[#e5ebe7] shadow-sm space-y-3">
+        <div className="bg-white p-5 rounded-[28px] border border-black/[0.06] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-gray-500">Kategori Terbesar</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <span className="text-xs font-medium text-neutral-500">Kategori Terbesar</span>
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center">
               <Tag className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-base font-black text-gray-900 truncate">
+            <p className="text-base font-bold text-[#111111] truncate">
               {isLoadingSummary
                 ? "..."
                 : summaryData?.context?.categoryBreakdown?.[0]?.category || "Belum ada data"}
             </p>
-            <p className="text-[11px] text-gray-400 mt-1">
+            <p className="text-[11px] text-neutral-400 mt-1">
               {summaryData?.context?.categoryBreakdown?.[0]?.percentage
                 ? `${summaryData.context.categoryBreakdown[0].percentage} dari seluruh transaksi`
                 : "Tambahkan transaksi untuk melihat analisis"}
@@ -236,20 +236,20 @@ export default function InsightsPage() {
         </div>
 
         {/* Card 4: Top Merchant */}
-        <div className="bg-white p-5 rounded-3xl border border-[#e5ebe7] shadow-sm space-y-3">
+        <div className="bg-white p-5 rounded-[28px] border border-black/[0.06] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-gray-500">Merchant Terbesar</span>
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <span className="text-xs font-medium text-neutral-500">Merchant Terbesar</span>
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center">
               <Store className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-base font-black text-gray-900 truncate">
+            <p className="text-base font-bold text-[#111111] truncate">
               {isLoadingSummary
                 ? "..."
                 : summaryData?.context?.topMerchants?.[0]?.merchant || "Belum ada data"}
             </p>
-            <p className="text-[11px] text-emerald-700 font-semibold mt-1">
+            <p className="text-[11px] text-emerald-700 font-medium mt-1">
               {summaryData?.context?.topMerchants?.[0]?.totalFormatted || "Tambahkan transaksi"}
             </p>
           </div>
@@ -259,16 +259,16 @@ export default function InsightsPage() {
       {/* Strategic Summary & Recommendations */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: AI Executive Summary */}
-        <div className="lg:col-span-7 bg-white p-6 sm:p-7 rounded-3xl border border-[#e5ebe7] shadow-sm space-y-4">
+        <div className="lg:col-span-7 bg-white p-6 sm:p-7 rounded-[28px] border border-black/[0.06] shadow-xs space-y-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-emerald-700" />
+            <div className="w-9 h-9 rounded-2xl bg-neutral-100 text-neutral-800 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-neutral-800" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-gray-900">
+              <h3 className="text-base font-bold text-[#111111]">
                 Ringkasan Analisis Finansial AI
               </h3>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-neutral-400">
                 Dihasilkan otomatis berdasarkan data struk dan transaksi pengguna
               </p>
             </div>
@@ -276,8 +276,8 @@ export default function InsightsPage() {
 
           {isLoadingSummary ? (
             <div className="py-12 flex flex-col items-center justify-center gap-3 text-center">
-              <RefreshCw className="w-8 h-8 text-emerald-600 animate-spin" />
-              <p className="text-xs text-gray-500 font-medium">
+              <RefreshCw className="w-8 h-8 text-[#111111] animate-spin" />
+              <p className="text-xs text-neutral-500 font-medium">
                 Gemini AI sedang membaca dan mengalkulasi data transaksi Anda...
               </p>
             </div>
@@ -287,7 +287,7 @@ export default function InsightsPage() {
               <span>{summaryError}</span>
             </div>
           ) : (
-            <div className="space-y-3 text-xs sm:text-sm text-gray-600 leading-relaxed bg-[#f8faf9] p-5 rounded-2xl border border-[#e5ebe7]">
+            <div className="space-y-3 text-xs sm:text-sm text-neutral-600 leading-relaxed bg-[#f8f8f6] p-5 rounded-2xl border border-black/[0.04]">
               {summaryData?.summary ? (
                 summaryData.summary.split("\n\n").map((para, i) => (
                   <p key={i} className="whitespace-pre-line">
@@ -302,16 +302,16 @@ export default function InsightsPage() {
         </div>
 
         {/* Right Column: Key Recommendations */}
-        <div className="lg:col-span-5 bg-white p-6 sm:p-7 rounded-3xl border border-[#e5ebe7] shadow-sm space-y-4">
+        <div className="lg:col-span-5 bg-white p-6 sm:p-7 rounded-[28px] border border-black/[0.06] shadow-xs space-y-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-amber-600" />
+            <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-gray-900">
+              <h3 className="text-base font-bold text-[#111111]">
                 Rekomendasi Utama
               </h3>
-              <p className="text-xs text-gray-400">Tindakan nyata untuk menghemat pengeluaran</p>
+              <p className="text-xs text-neutral-400">Tindakan nyata untuk menghemat pengeluaran</p>
             </div>
           </div>
 
@@ -319,63 +319,63 @@ export default function InsightsPage() {
             {isLoadingSummary ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((n) => (
-                  <div key={n} className="h-14 bg-gray-100 animate-pulse rounded-2xl" />
+                  <div key={n} className="h-14 bg-neutral-100 animate-pulse rounded-2xl" />
                 ))}
               </div>
             ) : summaryData?.key_recommendations && summaryData.key_recommendations.length > 0 ? (
               summaryData.key_recommendations.map((rec, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-2xl bg-[#f8faf9] border border-[#e5ebe7] flex items-start gap-3 hover:border-emerald-300 transition"
+                  className="p-3.5 rounded-2xl bg-[#f8f8f6] border border-black/[0.04] flex items-start gap-3 hover:border-black/20 transition"
                 >
-                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   </div>
-                  <p className="text-xs text-gray-700 leading-relaxed font-medium">
+                  <p className="text-xs text-neutral-700 leading-relaxed font-medium">
                     {rec}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-xs text-gray-400">Belum ada rekomendasi yang tersedia.</p>
+              <p className="text-xs text-neutral-400">Belum ada rekomendasi yang tersedia.</p>
             )}
           </div>
         </div>
       </div>
 
       {/* Interactive AI Chat Section */}
-      <div className="bg-white rounded-3xl border border-[#e5ebe7] shadow-xl overflow-hidden flex flex-col min-h-[550px]">
+      <div className="bg-white rounded-[28px] border border-black/[0.06] shadow-xs overflow-hidden flex flex-col min-h-[550px]">
         {/* Chat Header */}
-        <div className="p-5 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#f8faf9]">
+        <div className="p-5 sm:p-6 border-b border-black/[0.04] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#fafaf8]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#0e3d25] text-[#c8f53c] flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-[#111111] text-white flex items-center justify-center shadow-xs">
               <Bot className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-gray-900">
-                  Konsultasi AI Keuangan COINEST
+                <h3 className="text-base font-bold text-[#111111]">
+                  Konsultasi AI Keuangan ExpendNote
                 </h3>
-                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60">
                   Gemini Online
                 </span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-neutral-400">
                 Tanyakan apa saja seputar pengeluaran, perincian belanja, atau tips hemat
               </p>
             </div>
           </div>
 
           {/* Scope Guardrail Info Badge */}
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px]">
-            <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100 border border-black/[0.06] text-neutral-700 text-[11px]">
+            <ShieldAlert className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
             <span>Topik dibatasi khusus keuangan & data transaksi</span>
           </div>
         </div>
 
         {/* Quick Suggestion Chips */}
-        <div className="p-4 border-b border-gray-100 bg-white flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-gray-400 mr-1 flex items-center gap-1">
+        <div className="p-4 border-b border-black/[0.04] bg-white flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium text-neutral-400 mr-1 flex items-center gap-1">
             <HelpCircle className="w-3.5 h-3.5" />
             Contoh:
           </span>
@@ -385,9 +385,9 @@ export default function InsightsPage() {
               type="button"
               onClick={() => handleSendQuestion(q.query)}
               disabled={isAsking}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ${q.label.includes("Pizza")
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition cursor-pointer flex items-center gap-1.5 ${q.label.includes("Pizza")
                 ? "bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100"
-                : "bg-[#f4f7f5] text-gray-700 border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-900"
+                : "bg-[#f4f4f2] text-neutral-700 hover:bg-neutral-200/70"
                 }`}
             >
               <span>{q.label}</span>
@@ -405,11 +405,11 @@ export default function InsightsPage() {
             >
               {/* Avatar */}
               <div
-                className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-xs ${msg.role === "user"
-                  ? "bg-[#0e3d25] text-white"
+                className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 shadow-xs ${msg.role === "user"
+                  ? "bg-[#111111] text-white"
                   : msg.is_financial === false
                     ? "bg-rose-100 text-rose-700"
-                    : "bg-[#c8f53c] text-[#0b1614]"
+                    : "bg-neutral-100 text-neutral-800"
                   }`}
               >
                 {msg.role === "user" ? (
@@ -421,11 +421,11 @@ export default function InsightsPage() {
 
               {/* Message Bubble */}
               <div
-                className={`rounded-2xl p-4 text-xs sm:text-sm leading-relaxed shadow-sm ${msg.role === "user"
-                  ? "bg-[#0e3d25] text-white rounded-tr-none"
+                className={`rounded-[20px] p-4 text-xs sm:text-sm leading-relaxed ${msg.role === "user"
+                  ? "bg-[#111111] text-white rounded-tr-none"
                   : msg.is_financial === false
                     ? "bg-rose-50 border border-rose-200 text-rose-900 rounded-tl-none"
-                    : "bg-[#f8faf9] border border-[#e4ebe5] text-gray-800 rounded-tl-none"
+                    : "bg-[#f4f4f2] text-neutral-800 rounded-tl-none"
                   }`}
               >
                 {/* Warning tag if question was rejected */}
@@ -441,7 +441,7 @@ export default function InsightsPage() {
                 </div>
 
                 <div
-                  className={`text-[10px] mt-2 text-right ${msg.role === "user" ? "text-emerald-300" : "text-gray-400"
+                  className={`text-[10px] mt-2 text-right ${msg.role === "user" ? "text-white/50" : "text-neutral-400"
                     }`}
                 >
                   {msg.timestamp}
@@ -453,11 +453,11 @@ export default function InsightsPage() {
           {/* Typing Indicator */}
           {isAsking && (
             <div className="flex gap-3 max-w-[80%] mr-auto animate-fade-in">
-              <div className="w-8 h-8 rounded-xl bg-[#c8f53c] text-[#0b1614] flex items-center justify-center shrink-0 mt-1">
+              <div className="w-8 h-8 rounded-full bg-neutral-100 text-neutral-800 flex items-center justify-center shrink-0 mt-1">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="bg-[#f8faf9] border border-[#e4ebe5] rounded-2xl rounded-tl-none p-4 text-xs text-gray-500 flex items-center gap-2">
-                <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+              <div className="bg-[#f4f4f2] rounded-[20px] rounded-tl-none p-4 text-xs text-neutral-500 flex items-center gap-2">
+                <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#111111]" />
                 <span>AI Gemini sedang menganalisis data keuangan Anda...</span>
               </div>
             </div>
@@ -472,7 +472,7 @@ export default function InsightsPage() {
             e.preventDefault();
             handleSendQuestion();
           }}
-          className="p-4 border-t border-gray-100 bg-[#f8faf9] flex items-center gap-3"
+          className="p-4 border-t border-black/[0.04] bg-[#fafaf8] flex items-center gap-3"
         >
           <input
             type="text"
@@ -480,12 +480,12 @@ export default function InsightsPage() {
             onChange={(e) => setInputQuestion(e.target.value)}
             disabled={isAsking}
             placeholder="Tanyakan analisis keuangan Anda (misal: 'Berapa total belanja saya di Indomaret?')..."
-            className="flex-1 px-4 py-3 bg-white border border-[#e5ebe7] rounded-2xl text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
+            className="flex-1 px-4 py-3 bg-white border border-black/[0.06] rounded-full text-xs sm:text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-black/20 transition"
           />
           <button
             type="submit"
             disabled={!inputQuestion.trim() || isAsking}
-            className="px-5 py-3 rounded-2xl bg-[#0e3d25] hover:bg-[#155333] text-white font-bold text-xs sm:text-sm transition flex items-center gap-2 shadow-md disabled:opacity-40 cursor-pointer"
+            className="px-6 py-3 rounded-full bg-[#111111] hover:bg-black text-white font-medium text-xs sm:text-sm transition flex items-center gap-2 shadow-sm disabled:opacity-40 cursor-pointer"
           >
             <span>Kirim</span>
             <Send className="w-3.5 h-3.5" />
